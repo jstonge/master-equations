@@ -1,5 +1,12 @@
 <script>
-    let { nodes, color_scale } = $props()
+    import { scaleOrdinal } from "d3-scale"
+
+
+    let { nodes } = $props()
+ 
+    let color_palette = ["#778da9", "#6a4c93", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#ca6702", "#bb3e03", "#ae2012", "#9b2226"]
+    let color_scale = scaleOrdinal([1,2,3,4,5], color_palette)
+    let isGroup = false
 </script>
 
 
@@ -8,7 +15,7 @@
     <circle
         cx={node.x}
         cy={node.y}
-        fill={color_scale(node.group)}
+        fill={node.infected === true ? "red" : "lightgrey"}
         stroke={node.highlight === true ? "yellow" : "black"}
         opacity=1.
         class:highlight={node.highlight === true }
@@ -16,7 +23,7 @@
         r={10}></circle>  
     </g>
     <g>
-        <text
+    <text
         x={node.x}
         y={node.y}
         dx={12}
@@ -25,7 +32,8 @@
         stroke="black"
         stroke-width="0.5"
     >
-        {node.label[0]}. {node.label.split(" ").at(-1)}
+        <!-- {node.label[0]}. {node.label.split(" ").at(-1)} -->
+        {""}
     </text>
     </g>
 {/each}
@@ -52,19 +60,4 @@
     }
 
 
-    @keyframes flickerLink {
-    0%, 100% {
-        stroke: yellow;
-        opacity: 1;
-    }
-    50% {
-        stroke: orange;
-        opacity: 0.2;
-    }
-    }
-
-    line.highlight {
-    animation: flickerLink 1s ease-in-out infinite;
-    stroke-width: 3;
-    }
 </style>

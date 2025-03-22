@@ -1,10 +1,10 @@
 // layouts/forceDirected.js
 import { forceSimulation, forceManyBody, forceCenter, forceLink, forceCollide } from "d3-force";
 
-export function forceDirectedLayout({ nodes, links, width, height, iterations = 300 }) {
+export function forceDirectedLayout({ nodes, links, width, height, iterations = 1000 }) {
   const simulation = forceSimulation(nodes)
     .force("link", forceLink(links).id(d => d.id).distance(80).strength(0.1))
-    .force("charge", forceManyBody().strength(-200))
+    .force("charge", forceManyBody().strength(-100))
     .force("center", forceCenter(width, height / 1.5))
     .force("collision", forceCollide(15))
     .stop();

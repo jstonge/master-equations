@@ -1,91 +1,111 @@
-<script>
-    
-    import { scaleOrdinal } from "d3-scale"
-    
-    import Edges from "$components/SimpleLinks.svelte";
-    import Nodes from "$components/Nodes.svelte";
+<script lang="ts">
+	import { createInterval } from '$lib/utils/interval';
+	import {
+		resetNodes,
+		infectMainNode,
+		highlightConnectedNodes,
+		highlightRandomNeighbor
+	} from '$lib/utils/dynamics';
 
-    import { forceDirectedLayout } from "./ForceLayout.js";
-    import { radialLayout } from "./RadialLayout.js";
-    
-    let { value, width, height, nodes, links, padding } = $props();
+	import Manylinks from '$data/edges.json';
 
-    let innerWidth = $derived(width - padding.right);
-    let innerHeight = height - padding.top - padding.bottom;
+	import Edges from '$components/SimpleLinks.svelte';
+	import Nodes from '$components/Nodes.svelte';
 
-    let color_palette = ["#778da9", "#6a4c93", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#ca6702", "#bb3e03", "#ae2012", "#9b2226"]
-    let color_scale = scaleOrdinal([1,2,3,4,5], color_palette)
+	import { radialLayout } from '$lib/RadialLayout';
 
-    // Make data reactive
-    let initialData = nodes;
-    let renderedData = $state(initialData);
+	// Props
+	let { value, nodes, links, width, height, padding } = $props();
 
-    let nodes_xy = $state(radialLayout({ 
-        nodes, links, width, height: innerHeight 
-    }));
-    
+	// Layout dimensions
+	let innerWidth = $derived(width - padding.right);
+	let innerHeight = height - padding.top - padding.bottom;
 
-    $effect(() => {
-        if (value == 0) {
-            renderedData = initialData;
-            nodes_xy.forEach(n => n.highlight = false);
-            links.forEach(l => l.highlight = false);
+	// Initial layout and state
+	let nodes_xy: Node[] = $state(radialLayout({ nodes, links, width, height: innerHeight }));
 
-        } else if (value == 1) {
-           // Step 1: Pick the main node (e.g. first one)
-            const mainNode = nodes_xy[0];
-            mainNode.highlight = true;
+	const mainNode = $derived(nodes_xy[0]);
 
-            // Step 2: Find connected nodes and highlight them
-            const connectedNodeIds = new Set();
+	// let renderedNodesData = $state(nodes);
+	let renderedLinks = $state(links);
 
-            links.forEach(link => {
-            const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
-            const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+	let index = $state(1);
+	let stopInterval: () => void = () => {};
 
-            if (sourceId === mainNode.id) {
-                connectedNodeIds.add(targetId);
-                link.highlight = true;
-            } else if (targetId === mainNode.id) {
-                connectedNodeIds.add(sourceId);
-                link.highlight = true;
-            }
-            });
+	let selectedNeighbor: string | null = null; 
 
-            // Step 3: Highlight connected nodes
-            nodes_xy.forEach(n => {
-            if (connectedNodeIds.has(n.id)) {
-                n.highlight = true;
-            }
-            });
+	$effect(() => {
+		stopInterval();
 
-        } else if (value == 2) {
-            renderedData = initialData;
-            nodes_xy.forEach(n => n.highlight = false);
-            links.forEach(l => l.highlight = false); 
-        } else if (value == 3) {
-            nodes_xy = forceDirectedLayout({ 
-                nodes, links, width, height: innerHeight 
-            });
-        }  
-     });
+		switch (value) {
+			case 0:
+				resetNodes(nodes_xy, nodes);
+				stopInterval = createInterval(() => {
+					index = (index + 1) % Manylinks.length;
+					renderedLinks = Manylinks[index];
+				}, 1000);
+				break;
+
+			case 1:
+				infectMainNode(mainNode);
+				nodes_xy.forEach(n => (n.highlight = false));
+				break;
+
+			case 2:
+				infectMainNode(mainNode);
+				highlightConnectedNodes(nodes_xy, renderedLinks, mainNode.id);
+				break;
+
+			case 3:
+				infectMainNode(mainNode);
+				selectedNeighbor = highlightRandomNeighbor(nodes_xy, renderedLinks, mainNode.id);
+				break;
+
+			case 4:
+				// infect selected neighbor with 50% probability
+				if (selectedNeighbor) {
+					const neighborNode = nodes_xy.find(n => n.id === selectedNeighbor);
+					// if (neighborNode && Math.random() < 0.5) {
+					neighborNode.infected = true;
+					neighborNode.highlight = false;
+					console.log(`💉 ${neighborNode.id} got infected`);
+					// } else {
+						// console.log(`😌 ${selectedNeighbor} resisted infection`);
+					// }
+				}
+				break;
+			case 5:
+				resetNodes(nodes_xy, nodes);
+		}
+
+		return () => stopInterval();
+});
+
+$inspect(selectedNeighbor)
 
 </script>
 
 <div class="chart-container">
-    <svg {width} {height}>
-        <text font-size="20px" stroke="black" stroke-width="0.5" x={innerWidth-20} y={padding.top-10}>2019</text>
-        <g class="inner-chart" transform="translate({padding.left-10}, {padding.top})">
-            <Edges {links} />
-            <Nodes nodes={nodes_xy} color_scale={color_scale} />
-    </svg>
+	<svg {width} {height}>
+		<text
+			font-size="20px"
+			stroke="black"
+			stroke-width="0.5"
+			x={innerWidth - 20}
+			y={padding.top - 10}
+		>
+			2019
+		</text>
+		<g class="inner-chart" transform="translate({padding.left - 10}, {padding.top})">
+			<Edges links={renderedLinks} nodes={nodes_xy} />
+			<Nodes nodes={nodes_xy} />
+		</g>
+	</svg>
 </div>
 
 <style>
-
-  
-    :global(*) {
-      font-family: Inter;
-      -moz-osx-font-smoothing: grayscale;
-}  
+	:global(*) {
+		font-family: Inter;
+		-moz-osx-font-smoothing: grayscale;
+	}
 </style>
