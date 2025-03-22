@@ -1,12 +1,15 @@
 <script lang="ts">    
-
+    import { getContext } from "svelte";
 	import Network from "$components/Network.svelte";
     import Scrolly from "$components/helpers/Scrolly.svelte";
     import BouncingBalls from "$components/Bouncing.svelte";
 
     import nodes from "$data/nodes.csv";
-   
     import Manylinks from "$data/edges.json";
+    
+    const copy = getContext("copy");
+    
+    const steps = copy.steps;
 
     let links = Manylinks[0]
    
@@ -18,14 +21,14 @@
     
     let value = $state(); // Make value reactive
     
-    const myNarrative = [
-        'Annealed network. Here we reshuffle connections each frame of 1 second, effectively drawing from network ensemble.', 
-        'We freeze the network with an infected node to show the dynamics. Here we will do a SI step.',
-        'Flickering neighbors, defining who is part of the group! Here, we limit ourselves to pairwise. Among neighbors we will select one random neighbor to maybe infect.', 
-        "Here's the lucky neighbor. Now with some probability (50%) we infect it.", 
-        'Success!',
-        'Lets reset everything and move to the next thing.',
-    ]
+    // const myNarrative = [
+    //     'Annealed network. Annealed approximation let us deal directly with network ensemble. To do so, we reshuffle connections each frame of 500 millisecond, effectively drawing from network ensemble. This is the same than saying the network structure changes rapidly, with the dynamics happening at much lower rate than that of reshuffling. Why does it make sense? ', 
+    //     'We freeze the network with an infected node to show the dynamics. Here we will do a SI step.',
+    //     'Flickering neighbors, defining who is part of the group! Here, we limit ourselves to pairwise. Among neighbors we will select one random neighbor to maybe infect.', 
+    //     "Here's the lucky neighbor. Now with some probability (50%) we infect it.", 
+    //     'Success!',
+    //     'Lets reset everything and move to the next thing.',
+    // ]
 
 </script>
     
@@ -50,10 +53,10 @@
     <h2>Scrolly <span>{value || "-"}</span></h2>
     <div class="spacer"></div>
     <Scrolly bind:value>
-        {#each myNarrative as text, i}
+        {#each steps as text, i}
             {@const active = value === i}
             <div class="step" class:active>
-          <p>{text}</p>
+                <p>{text.value}</p>
             </div>
         {/each}
     </Scrolly>

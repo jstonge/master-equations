@@ -43,7 +43,7 @@
 				stopInterval = createInterval(() => {
 					index = (index + 1) % Manylinks.length;
 					renderedLinks = Manylinks[index];
-				}, 1000);
+				}, 500);
 				break;
 
 			case 1:

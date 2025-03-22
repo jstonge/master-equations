@@ -2,39 +2,27 @@
     "steps": [
     {
       "type": "text",
-      "value": "You’ve got $40 max to spend on a wine for a special occasion. Which wine are you buying?"
+      "value": "Annealed network. Annealed approximation let us deal directly with network ensemble. To do so, we reshuffle connections each frame of 500 millisecond, effectively drawing from network ensemble. This is the same than saying the network structure changes rapidly, with the dynamics happening at much lower rate than that of reshuffling. Why does it make sense?"
     },
     {
       "type": "text",
-      "value": "Step 2"
+      "value": "We freeze the network with an infected node to show the dynamics. Here we will do a SI step."
     },
     {
       "type": "text",
-      "value": "We scraped 9,300 wines off the popular app <a href=https://www.vivino.com/>Vivino</a> and used <a href=https://platform.openai.com/docs/guides/vision>Chat-GPT Vision</a> to help us categorize the animals on the labels with this prompt: <span class=prompt>This image is a wine label. Do you see any animals or humans on it?<a href=#methods></span> <span class=instructions >Read more in the methods.</span></a>"
+      "value": "Flickering neighbors, defining who is part of the group! Here, we limit ourselves to pairwise. Among neighbors we will select one random neighbor to maybe infect."
     },
     {
       "type": "text",
-      "value": "Sometimes it was spot on. It correctly identified all of these labels as birds even though the artistic styles were different."
+      "value": "Here's the lucky neighbor. Now with some probability (50%) we infect it."
     },
     {
       "type": "text",
-      "value": "But other times, we had to manually review and edit. GPT was particularly bad with elephants. <br><br> It also struggled when animals weren’t the focal point and with what counted as an “animal.” <br><br> Sometimes anthropomorphic or mythical creatures were included, sometimes not."
+      "value": "Success!"
     },
     {
       "type": "text",
-      "value": "After cleaning up the data we grouped the animals into broad categories based more on common perception than binomial nomenclature (genus and species) — sorry science purists — and omitted categories with fewer than 20 animals, leaving us with these 16 groupings. Here’s your <span class=selected-animal-span>original animal</span>."
-    },
-    {
-      "type": "text",
-      "value": "To get a general understanding of the wines, we found the median price of each animal group."
-    },
-    {
-      "type": "text",
-      "value": "Then we looked at the rating."
-    },
-    {
-      "type": "text",
-      "value": "But that only gets us so far. What we really care about are the steals, wines whose <span class=bold>price is below the median</span> and whose <span class=bold>rating is above the median</span>. This is…"
+      "value": "Lets reset everything and move to the next thing."
     }
   ]
 }
