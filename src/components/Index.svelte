@@ -1,17 +1,20 @@
 <script lang="ts">    
     import { getContext } from "svelte";
+
 	import Network from "$components/Network.svelte";
+	import Quench from "$components/Quench.svelte";
     import Scrolly from "$components/helpers/Scrolly.svelte";
     import BouncingBalls from "$components/Bouncing.svelte";
 
     import nodes from "$data/nodes.csv";
     import Manylinks from "$data/edges.json";
     
-    const copy = getContext("copy");
-    
-    const steps = copy.steps;
-
+    // First entry is the original data
     let links = Manylinks[0]
+
+    const copy = getContext("copy");    
+    const steps = copy.steps;
+    const postIntro = copy.postIntro;
    
     // Global properties of the plots.
     let width = $state(400),
@@ -19,17 +22,7 @@
     
     const padding = {top: 50, right: 40, bottom: 100, left: 100};
     
-    let value = $state(); // Make value reactive
-    
-    // const myNarrative = [
-    //     'Annealed network. Annealed approximation let us deal directly with network ensemble. To do so, we reshuffle connections each frame of 500 millisecond, effectively drawing from network ensemble. This is the same than saying the network structure changes rapidly, with the dynamics happening at much lower rate than that of reshuffling. Why does it make sense? ', 
-    //     'We freeze the network with an infected node to show the dynamics. Here we will do a SI step.',
-    //     'Flickering neighbors, defining who is part of the group! Here, we limit ourselves to pairwise. Among neighbors we will select one random neighbor to maybe infect.', 
-    //     "Here's the lucky neighbor. Now with some probability (50%) we infect it.", 
-    //     'Success!',
-    //     'Lets reset everything and move to the next thing.',
-    // ]
-
+    let value = $state(); // reactive scrollIndex
 </script>
     
 
@@ -37,34 +30,64 @@
 
 <div class="centered-layout">
     <div class="text-block">
-        <p>This is the most quintessential example of a contagion. </p>
+        <h3>We investigate annealed networks and their relationship to so-called quenched.</h3>
+        <h3>On the right, we have the most quintessential example of a contagion; the billard ball world. </h3>
+        <h3>We argue this is all wrong, but not for the same reason as usual.</h3>
     </div>
     <div class="bounce-container">
         <BouncingBalls {width} {height}/>
     </div>
 </div>
 
-<p>The following is a <a href="https://www.w3schools.com/howto/howto_css_sticky_element.asp">sticky chart</a>. As you scroll down, it'll stick to your window.</p>
-<div class="chart-container-scrolly" bind:clientWidth={width}>
-    <Network {value} {nodes} {links} {width} {height} {padding}/>
-</div>
+<section id="mean-field">
+    
+    <p>The following is a <a href="https://www.w3schools.com/howto/howto_css_sticky_element.asp">sticky chart</a>. As you scroll down, it'll stick to your window.</p>
 
-<section id="scrolly">
+    <div class="chart-container-scrolly" bind:clientWidth={width}>
+        <Network {value} {nodes} {links} {width} {height} {padding}/>
+    </div>
+
     <h2>Scrolly <span>{value || "-"}</span></h2>
     <div class="spacer"></div>
     <Scrolly bind:value>
-        {#each steps as text, i}
-            {@const active = value === i}
-            <div class="step" class:active>
-                <p>{text.value}</p>
-            </div>
-        {/each}
+            {#each steps as text, i}
+                {@const active = value === i}
+                <div class="step" class:active>
+                    <p> 
+                        {@html text.value}
+                    </p>
+                </div>
+            {/each}
     </Scrolly>
     <div class="spacer"></div>
+    
 </section>
 
+<p>We keep going after. Mean-field theory is a powerful approximation, but it also has a fundamental drawback; it washes away persistent group interactions. It can somewhat ephemeral group interactions, which can be fairly inclusive as a process. For instance, many models of higher-order interactions are about paper coauthorships, where the ephemerality of the interactions is the span it takes to publish a paper. </p>
 
-We keep going after.
+<p>But workplace and households are both great example of group behaviors that are so persistent that it influences the dynamics in ways that mean-field just cannot. If your kid get sick, the chances are that the rest of the household will get sick too. There is <em>dynamical correlation</em> between the states of individuals within the household.</p>
+
+<section id="mean-field-versus-quench">
+    
+    <div class="chart-container-scrolly" bind:clientWidth={width}>
+        <Quench {value} {nodes} {links} {width} {height} {padding}/>
+    </div>
+
+    <h2>Scrolly <span>{value || "-"}</span></h2>
+    <div class="spacer"></div>
+    <Scrolly bind:value>
+            {#each postIntro as text, i}
+                {@const active = value === i}
+                <div class="step" class:active>
+                    <p> 
+                        {@html text.value}
+                    </p>
+                </div>
+            {/each}
+    </Scrolly>
+    <div class="spacer"></div>
+    
+</section>
  
 <style>
     :global(html, body) {
@@ -91,11 +114,9 @@ We keep going after.
         background: black;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        border-bottom: 3px solid #ff7e5f;
         display: inline-block;
-        margin: 20px auto;
-    }
-            
+        margin-top: 5rem;
+    }       
 
     .centered-layout {
         display: flex;
@@ -108,21 +129,21 @@ We keep going after.
 
     .text-block {
         flex: 0 1 auto;
-        margin-left: auto;
-        margin-right: auto;
         max-width: 400px;
         text-align: center;
+        margin-bottom: 10%;
+        margin-left: 10%;
     }
 
     .bounce-container {
         width: 300px;
         height: 300px;
-        flex-shrink: 0;
         margin-right: 5%;
+        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
     }
     
     .bounce-container {
-          margin-top: 10rem;
+          margin-top: 3rem;
           margin-bottom: 20rem;
           width: 45%;
           height: 300px;
@@ -146,6 +167,12 @@ We keep going after.
         position: sticky;
         top: 4em;
         margin-left: -85%;
+    }
+
+    h3 {
+        color: #aaa8a8;
+        font-size: 1.5rem;
+        font-style: italic;
     }
 
     .spacer {
@@ -180,10 +207,16 @@ We keep going after.
         width: 20%;
     }
 
+
     /* We use CSS to change properties based on 'active' state */
     .step.active p {
         background: white;
         color: black;
+    }
+
+    
+    :global(.step .bold) {
+        font-family: var(--sans);
     }
         
 </style>

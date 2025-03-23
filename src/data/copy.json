@@ -2,19 +2,19 @@
     "steps": [
     {
       "type": "text",
-      "value": "Annealed network. Annealed approximation let us deal directly with network ensemble. To do so, we reshuffle connections each frame of 500 millisecond, effectively drawing from network ensemble. This is the same than saying the network structure changes rapidly, with the dynamics happening at much lower rate than that of reshuffling. Why does it make sense?"
+      "value": "<strong>Annealed network</strong> Annealed approximation let us deal directly with network ensemble. To do so, we reshuffle connections each frame of 500 millisecond, effectively drawing from network ensemble. This is the same than saying the network structure changes rapidly, with the dynamics happening at much lower rate than that of reshuffling. Why does it make sense? <p>Think back to the bouncing balls. On average, the more balls were infected the more likely you were to bump into one, creating a mean-field approximation. Since we are reshuffling connections, we are doing the same with annealed networks, but here we can study properties of the graphs on which the dynamics take place. What if shuffle networks, while preserving the degree distribution. This means we can study degree might influence dynamics, as with complex networks (degree distribution is heavy-tail).</p> "
     },
     {
       "type": "text",
-      "value": "We freeze the network with an infected node to show the dynamics. Here we will do a SI step."
+      "value": "Lets freeze the network with an infected node to show the dynamics (it is also the star of our show, for now, so we'll make it a star)."
     },
     {
       "type": "text",
-      "value": "Flickering neighbors, defining who is part of the group! Here, we limit ourselves to pairwise. Among neighbors we will select one random neighbor to maybe infect."
+      "value": "Here we do a SI step, among our flickering neighbors. In contagion process, this is typically thought as the people you can influence. In one way, this is your group!"
     },
     {
       "type": "text",
-      "value": "Here's the lucky neighbor. Now with some probability (50%) we infect it."
+      "value": "Among neighbors we will select one random neighbor to maybe infect. Here's the lucky neighbor. Now with some probability (50%) we infect it."
     },
     {
       "type": "text",
@@ -22,7 +22,37 @@
     },
     {
       "type": "text",
-      "value": "Lets reset everything and move to the next thing."
+      "value": "Now that the SI step is done, repeat! We shuffle, we do a SI step. We shuffle, we do a SI step. Crazy stuff."
+    },
+    {
+      "type": "text",
+      "value": "Ok, cool. What else."
+    },
+    {
+      "type": "text",
+      "value": "Alternatively, we can start from the neighbors, some of which are activated. They are the stars now. This view make more sense for complex contagion of social behaviors, but it works just fine with airborn diseases."
+    },
+    {
+      "type": "text",
+      "value": "In this case, we can think about the chance of your friends make you buy an iphone. In threshold models, it might be a nonlinear function whereas above a particular threshold you yourself get activated. Here, we see that among N number of friends, 4 have been activated. "
+    },
+    {
+      "type": "text",
+      "value": "Huzzay, you got pressured by your friend to have a new iphone you absolutely didn't need!"
+    },
+    {
+      "type": "text",
+      "value": "Lets reset everything and move to the QUENCH networks."
+    }
+  ],
+  "postIntro": [
+    {
+      "type": "text",
+      "value": "Ok. Now a way to make clearer the two limits of annealed vs quenched would be to take two nodes as reference, of which one is infected"
+    },
+    {
+      "type": "text",
+      "value": "We let go the dynamics, taking notes everytime they have a contact. At infection rate (per second) **r**, it will take on average a contact time **t = 1/r** seconds for an infection to occur (at which point the other node turns red too)."
     }
   ]
 }

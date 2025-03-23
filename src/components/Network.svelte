@@ -2,9 +2,13 @@
 	import { createInterval } from '$lib/utils/interval';
 	import {
 		resetNodes,
-		infectMainNode,
+		infectNode,
 		highlightConnectedNodes,
-		highlightRandomNeighbor
+		highlightRandomNeighbor,
+		infectRandomNeighbors,
+		highlightNode,
+		StarNode,
+		idConnectedNodes,
 	} from '$lib/utils/dynamics';
 
 	import Manylinks from '$data/edges.json';
@@ -32,7 +36,52 @@
 	let index = $state(1);
 	let stopInterval: () => void = () => {};
 
-	let selectedNeighbor: string | null = null; 
+	let selectedNeighbor: string | null = $state(null); 
+
+	function takeOneStep(probability = 1.0) {
+		// 1. Update links (rewire)
+		index = (index + 1) % Manylinks.length;
+		renderedLinks = Manylinks[index];
+
+		// 2. Clear previous highlights
+		nodes_xy.forEach(n => n.highlight = false);
+
+		// 3. Wait a short time before attempting infection (so you can "see" the rewire)
+		setTimeout(() => {
+			const infectedNodes = nodes_xy.filter(n => n.infected);
+			const source = infectedNodes[Math.floor(Math.random() * infectedNodes.length)];
+			
+			if (infectedNodes.length === 0) return; // no one to spread from
+
+			const chosen = highlightRandomNeighbor(nodes_xy, renderedLinks, source.id);
+			
+			// 4. Optional: flicker highlight even if not infected
+			if (chosen) {
+				chosen.highlight = true;
+
+				// Short delay before infection so user sees flicker
+				setTimeout(() => {
+					infectNode(chosen, probability); // probabilistic infection
+				}, 800); // you can tweak this delay
+			}
+		}, 300); // delay between rewire and highlight
+	}
+
+	function runSteps(n: number, delay: number = 1000, probability: number = 1.0) {
+		let step = 0;
+
+		function doStep() {
+			if (step >= n) return;
+
+			takeOneStep(probability);
+			step++;
+
+			setTimeout(doStep, delay);
+		}
+
+		doStep();
+	}
+	
 
 	$effect(() => {
 		stopInterval();
@@ -40,6 +89,7 @@
 		switch (value) {
 			case 0:
 				resetNodes(nodes_xy, nodes);
+				mainNode.shape = undefined;
 				stopInterval = createInterval(() => {
 					index = (index + 1) % Manylinks.length;
 					renderedLinks = Manylinks[index];
@@ -47,42 +97,53 @@
 				break;
 
 			case 1:
-				infectMainNode(mainNode);
+				StarNode(mainNode);
+				infectNode(mainNode);
 				nodes_xy.forEach(n => (n.highlight = false));
 				break;
 
 			case 2:
-				infectMainNode(mainNode);
+				infectNode(mainNode);
 				highlightConnectedNodes(nodes_xy, renderedLinks, mainNode.id);
 				break;
 
 			case 3:
-				infectMainNode(mainNode);
 				selectedNeighbor = highlightRandomNeighbor(nodes_xy, renderedLinks, mainNode.id);
 				break;
 
 			case 4:
-				// infect selected neighbor with 50% probability
 				if (selectedNeighbor) {
-					const neighborNode = nodes_xy.find(n => n.id === selectedNeighbor);
-					// if (neighborNode && Math.random() < 0.5) {
-					neighborNode.infected = true;
-					neighborNode.highlight = false;
-					console.log(`💉 ${neighborNode.id} got infected`);
-					// } else {
-						// console.log(`😌 ${selectedNeighbor} resisted infection`);
-					// }
+					infectNode(selectedNeighbor)
 				}
 				break;
 			case 5:
+				setTimeout(() => runSteps(5, 1000 ,0.5), 0);
+				break;
+			case 6:
+				// PART II: complex contagion 
 				resetNodes(nodes_xy, nodes);
+				break
+			case 7:
+				idConnectedNodes(nodes_xy, renderedLinks, mainNode.id);
+				break				
+			case 8:
+				highlightNode(mainNode);
+				infectRandomNeighbors(nodes_xy, renderedLinks, mainNode.id, 4);
+				break;
+			case 9:
+				infectNode(mainNode);
+				break
+			case 10:
+				resetNodes(nodes_xy, nodes);
+				stopInterval = createInterval(() => {
+					index = (index + 1) % Manylinks.length;
+					renderedLinks = Manylinks[index];
+				}, 500);
+				break;
 		}
 
 		return () => stopInterval();
 });
-
-$inspect(selectedNeighbor)
-
 </script>
 
 <div class="chart-container">
