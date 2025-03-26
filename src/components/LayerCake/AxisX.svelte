@@ -65,6 +65,14 @@
           : $xScale.ticks(ticks);
   
     $: halfBand = isBandwidth ? $xScale.bandwidth() / 2 : 0;
+
+    export let axisTitle = '';     // Text for the Y-axis label
+    export let titleOffset = 30;   // How far away from the axis we want our label
+    
+    // For centering the axis title horizontally
+    $: xRange = $xScale.range();
+    $: xCenter = (xRange[0] + xRange[1]) / 2;
+
   </script>
   
   <g class="axis x-axis" class:snapLabels>
@@ -91,6 +99,16 @@
         >
       </g>
     {/each}
+    {#if axisTitle}
+      <!-- Axis title below the x-axis -->
+      <text
+        class="x-axis-title"
+        text-anchor="middle"
+        transform={`translate(${xCenter}, ${Math.max(...$yRange) + titleOffset})`}
+      >
+        {axisTitle}
+      </text>
+    {/if}
   </g>
   
   <style>
@@ -118,5 +136,10 @@
     }
     .axis.snapLabels .tick.tick-0 text {
       transform: translateX(-3px);
+    }
+
+    .x-axis-title {
+      font-size: 12px;
+      fill: #666;
     }
   </style>

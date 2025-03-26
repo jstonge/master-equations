@@ -19,7 +19,7 @@
 	import { radialLayout } from '$lib/RadialLayout';
 
 	// Props
-	let { value, nodes, links, width, height, padding } = $props();
+	let { scrollyIndex, nodes, links, width, height, padding } = $props();
 
 	// Layout dimensions
 	let innerWidth = $derived(width - padding.right);
@@ -86,7 +86,7 @@
 	$effect(() => {
 		stopInterval();
 
-		switch (value) {
+		switch (scrollyIndex) {
 			case 0:
 				resetNodes(nodes_xy, nodes);
 				mainNode.shape = undefined;
@@ -146,7 +146,8 @@
 });
 </script>
 
-<div class="chart-container">
+
+<div class="chart-container"  bind:clientWidth={width}>
 	<svg {width} {height}>
 		<text
 			font-size="20px"

@@ -10,6 +10,7 @@ export type Node = {
 	id: string;
 	x: number;
 	y: number;
+	shape?: string;
 	infected?: boolean;
 	highlight?: boolean;
 };

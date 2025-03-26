@@ -22,7 +22,7 @@
     
     const padding = {top: 50, right: 40, bottom: 100, left: 100};
     
-    let value = $state(); // reactive scrollIndex
+    let scrollyIndex = $state(); // reactive scrollIndex
 </script>
     
 
@@ -35,7 +35,7 @@
         <h3>We argue this is all wrong, but not for the same reason as usual.</h3>
     </div>
     <div class="bounce-container">
-        <BouncingBalls {width} {height}/>
+        <BouncingBalls width=650 height=300/>
     </div>
 </div>
 
@@ -44,14 +44,14 @@
     <p>The following is a <a href="https://www.w3schools.com/howto/howto_css_sticky_element.asp">sticky chart</a>. As you scroll down, it'll stick to your window.</p>
 
     <div class="chart-container-scrolly" bind:clientWidth={width}>
-        <Network {value} {nodes} {links} {width} {height} {padding}/>
+        <Network {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
     </div>
 
-    <h2>Scrolly <span>{value || "-"}</span></h2>
+    <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2>
     <div class="spacer"></div>
-    <Scrolly bind:value>
+    <Scrolly bind:value={scrollyIndex}>
             {#each steps as text, i}
-                {@const active = value === i}
+                {@const active = scrollyIndex === i}
                 <div class="step" class:active>
                     <p> 
                         {@html text.value}
@@ -70,14 +70,14 @@
 <section id="mean-field-versus-quench">
     
     <div class="chart-container-scrolly" bind:clientWidth={width}>
-        <Quench {value} {nodes} {links} {width} {height} {padding}/>
+        <Quench {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
     </div>
 
-    <h2>Scrolly <span>{value || "-"}</span></h2>
+    <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2>
     <div class="spacer"></div>
-    <Scrolly bind:value>
+    <Scrolly bind:value={scrollyIndex}>
             {#each postIntro as text, i}
-                {@const active = value === i}
+                {@const active = scrollyIndex === i}
                 <div class="step" class:active>
                     <p> 
                         {@html text.value}
@@ -89,6 +89,7 @@
     
 </section>
  
+
 <style>
     :global(html, body) {
             margin: 0;
@@ -131,7 +132,7 @@
         flex: 0 1 auto;
         max-width: 400px;
         text-align: center;
-        margin-bottom: 10%;
+        margin-bottom: 20%;
         margin-left: 10%;
     }
 
@@ -146,7 +147,7 @@
           margin-top: 3rem;
           margin-bottom: 20rem;
           width: 45%;
-          height: 300px;
+          height: 350px;
           margin-left: auto;
     }
 
@@ -154,7 +155,7 @@
     .chart-container-scrolly {
         width: 40%;
         background: white;
-        height: 600px;
+        height: 700px;
         box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
         position: sticky;
         top: 15%;

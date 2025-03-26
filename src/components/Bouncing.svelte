@@ -4,6 +4,8 @@
   let numBalls = $state(20);
   const RED_DURATION = 6000;
 
+  let {width, height} = $props()
+
   const sketch = (p5) => {
     let balls = [];
 
@@ -98,7 +100,7 @@
     let prevNumBalls = null;
 
     p5.setup = () => {
-      p5.createCanvas(640, 360);
+      p5.createCanvas(width, height);
       initBalls();
     };
 
