@@ -18,6 +18,9 @@
   
     /** @type {Number} [strokeWidth=0] – The circle's stroke width. */
     export let strokeWidth = 0;
+    
+    /** @type {Number} [opacity=1] – The circle's opacity. */
+    export let opacity = 1;
 
     const isFunction = (f) => typeof f === 'function';
   </script>
@@ -28,6 +31,7 @@
         cx={$xGet(d) + ($xScale.bandwidth ? $xScale.bandwidth() / 2 : 0)}
         cy={$yGet(d) + ($yScale.bandwidth ? $yScale.bandwidth() / 2 : 0)}
         {r}
+        {opacity}
         fill={isFunction(fill) ? fill(d) : fill}
         {stroke}
         stroke-width={strokeWidth}

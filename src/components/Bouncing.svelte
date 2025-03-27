@@ -5,7 +5,9 @@
   const RED_DURATION = 6000;
 
   let {width, height} = $props()
-
+  let padding = {top: 50, right: 20, bottom: 100, left: 20};
+  let innerWidth = width - padding.right;
+  
   const sketch = (p5) => {
     let balls = [];
 
@@ -100,7 +102,7 @@
     let prevNumBalls = null;
 
     p5.setup = () => {
-      p5.createCanvas(width, height);
+      p5.createCanvas(innerWidth, height);
       initBalls();
     };
 
@@ -147,10 +149,29 @@
   };
 </script>
 
-<label>
-  Ball count
-  <input type="range" bind:value={numBalls} min="1" max="100" />
-  {numBalls}
-</label>
+<div class="chart-container">  
+  <label>
+    Ball count
+    <input type="range" bind:value={numBalls} min="1" max="100" />
+    {numBalls}
+  </label>
+  <P5 {sketch} />
+</div>
 
-<P5 {sketch} />
+
+<style>
+  .chart-container {
+    padding: 1rem;
+    position: relative;
+    margin-right: 1rem;
+    margin-left: 1rem;
+
+    background: white;
+    border-radius: 6px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+
+    /* Optional */
+    max-width: 700px;
+    max-height: 450px;
+  }
+</style>

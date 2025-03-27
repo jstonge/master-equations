@@ -22,7 +22,7 @@
 	let { scrollyIndex, nodes, links, width, height, padding } = $props();
 
 	// Layout dimensions
-	let innerWidth = $derived(width - padding.right);
+	// let innerWidth = $derived(width - padding.right);
 	let innerHeight = height - padding.top - padding.bottom;
 
 	// Initial layout and state
@@ -30,7 +30,6 @@
 
 	const mainNode = $derived(nodes_xy[0]);
 
-	// let renderedNodesData = $state(nodes);
 	let renderedLinks = $state(links);
 
 	let index = $state(1);
@@ -147,17 +146,8 @@
 </script>
 
 
-<div class="chart-container"  bind:clientWidth={width}>
+<div class="chart-container">
 	<svg {width} {height}>
-		<text
-			font-size="20px"
-			stroke="black"
-			stroke-width="0.5"
-			x={innerWidth - 20}
-			y={padding.top - 10}
-		>
-			2019
-		</text>
 		<g class="inner-chart" transform="translate({padding.left - 10}, {padding.top})">
 			<Edges links={renderedLinks} nodes={nodes_xy} />
 			<Nodes nodes={nodes_xy} />
@@ -170,4 +160,5 @@
 		font-family: Inter;
 		-moz-osx-font-smoothing: grayscale;
 	}
+	
 </style>

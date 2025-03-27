@@ -5,6 +5,8 @@
 
 	// Component props
 	export let target: HTMLElement = undefined;
+	export let width: number = 400;
+	export let height: number = 300;
 	export let sketch: Sketch = undefined;
 	export let parentDivStyle: string = 'display: block;';
 	export let debug = false;
@@ -76,6 +78,12 @@
 		dispatch.ref();
 		dispatch.instance();
 	});
+
+	// Svelte reactivity block—runs whenever width or height change
+	// (After the instance is created)
+	$: if (project) {
+		project.resizeCanvas(width, height);
+	}
 </script>
 
 <div use:ref style={parentDivStyle} class="m-0" />

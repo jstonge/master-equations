@@ -4,7 +4,8 @@
 	import Network from "$components/Network.svelte";
 	import Quench from "$components/Quench.svelte";
     import Scrolly from "$components/helpers/Scrolly.svelte";
-    import BouncingBalls from "$components/Bouncing.svelte";
+    // import BouncingBalls from "$components/Bouncing.svelte";
+    import Hero from "$components/Hero.svelte";
 
     import nodes from "$data/nodes.csv";
     import Manylinks from "$data/edges.json";
@@ -26,18 +27,7 @@
 </script>
     
 
-<h1>Hello master equations</h1>
-
-<div class="centered-layout">
-    <div class="text-block">
-        <h3>We investigate annealed networks and their relationship to so-called quenched.</h3>
-        <h3>On the right, we have the most quintessential example of a contagion; the billard ball world. </h3>
-        <h3>We argue this is all wrong, but not for the same reason as usual.</h3>
-    </div>
-    <div class="bounce-container">
-        <BouncingBalls width=650 height=300/>
-    </div>
-</div>
+<Hero />
 
 <section id="mean-field">
     
@@ -47,7 +37,7 @@
         <Network {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
     </div>
 
-    <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2>
+    <!-- <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2> -->
     <div class="spacer"></div>
     <Scrolly bind:value={scrollyIndex}>
             {#each steps as text, i}
@@ -69,11 +59,11 @@
 
 <section id="mean-field-versus-quench">
     
-    <div class="chart-container-scrolly" bind:clientWidth={width}>
+    <div class="chart-container-scrolly">
         <Quench {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
     </div>
 
-    <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2>
+    <!-- <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2> -->
     <div class="spacer"></div>
     <Scrolly bind:value={scrollyIndex}>
             {#each postIntro as text, i}
@@ -104,58 +94,10 @@
         margin-bottom: 4rem; /* Adds space between elements */
     }
 
-    h1 {
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-align: center;
-        color: #333;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        padding: 10px 20px;
-        background: black;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        display: inline-block;
-        margin-top: 5rem;
-    }       
-
-    .centered-layout {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        max-width: 100%;
-        margin: 4rem auto;
-        gap: 2rem;
-    }
-
-    .text-block {
-        flex: 0 1 auto;
-        max-width: 400px;
-        text-align: center;
-        margin-bottom: 20%;
-        margin-left: 10%;
-    }
-
-    .bounce-container {
-        width: 300px;
-        height: 300px;
-        margin-right: 5%;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
-    }
-    
-    .bounce-container {
-          margin-top: 3rem;
-          margin-bottom: 20rem;
-          width: 45%;
-          height: 350px;
-          margin-left: auto;
-    }
-
-
     .chart-container-scrolly {
         width: 40%;
         background: white;
-        height: 700px;
+        height: 550px;
         box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
         position: sticky;
         top: 15%;
@@ -168,12 +110,6 @@
         position: sticky;
         top: 4em;
         margin-left: -85%;
-    }
-
-    h3 {
-        color: #aaa8a8;
-        font-size: 1.5rem;
-        font-style: italic;
     }
 
     .spacer {
@@ -219,6 +155,35 @@
     :global(.step .bold) {
         font-family: var(--sans);
     }
+
+    @media (max-width: 1200px) {
+        
+        .chart-container-scrolly {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            position: sticky;
+            top: 80px; /* adjust depending on your layout */
+            z-index: 0;
+            box-shadow: none;
+            background: none;
+        }
+
+        .step {
+            margin-left: 0;
+            padding: 0 1rem;
+        }
+
+        .step p {
+            width: 100%;
+            max-width: 600px;
+        }
+
+        h2 {
+            margin-left: 0;
+        }
+        }
+
         
 </style>
     

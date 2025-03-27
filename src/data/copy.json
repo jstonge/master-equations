@@ -53,6 +53,14 @@
     {
       "type": "text",
       "value": "We let go the dynamics, taking notes everytime they have a contact ('contact duration'). At infection rate **r=0.2** (per second, or frame) , it will take on average a contact time **t = 1/r** seconds for an infection to occur (at which point the other node turns red too). That is, since we have a a kind of probability of infection per contact, whereas the **P(infection occurs within s) = 1 - rs** and since s is small we get that infection probability is simple equals to rate *r** times duration **s**. If contacts last say **s** seconds each, it will take t/s seconds on average to pass the infection."
+    },
+    {
+      "type": "text",
+      "value": "Now, we generalize this process to get the average s for many trials. Showing mutual information. "
+    },
+    {
+      "type": "text",
+      "value": "One more plot to show showing structural similarity and mutual information."
     }
   ]
 }

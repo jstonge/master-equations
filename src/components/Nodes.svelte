@@ -25,7 +25,7 @@
     }
 </script>
 
-
+<g class="node">
 {#each nodes as node}
     <g class="nodes">
     {#if node.shape === 'star'}
@@ -64,6 +64,7 @@
     </text>
     </g>
 {/each}
+</g>
 
 <style>
     .nodes {
