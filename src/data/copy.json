@@ -2,39 +2,68 @@
     "steps": [
     {
       "type": "text",
-      "value": "You’ve got $40 max to spend on a wine for a special occasion. Which wine are you buying?"
+      "value": "Borrowed from metallurgy, annealing refers to the process of slowly cooling a metal so that its atomic structure settles into a stable — though not static — configuration. In network modeling, annealed networks refer to a similar idea: connections between nodes are not fixed, but constantly reshuffling, like social ties in a fast-moving crowd. <p>Annealed approximations let us work directly with a <u>network ensemble</u> — a family of possible network configurations. In practice, we implement this by reshuffling the network’s edges every 500 milliseconds, effectively sampling a new adjacency matrix each time. This corresponds to the assumption that network structure changes much faster than the dynamics evolving on top of it.</p> <p>But why does that make sense?</p> <p>Think back to the bouncing balls. On average, the more infected balls there were, the more likely you were to bump into one. That’s the essence of a <u>mean-field approximation</u> — we ignore the specific bump and just look at average exposure. Annealed networks work similarly: by rapidly reshuffling, we erase specific structures while preserving general patterns, like degree.</p> <p>And that opens up an interesting possibility. What if we reshuffle, but preserve the degree distribution? Now, we can explore how degree heterogeneity — like in complex networks with heavy-tailed distributions — influences the dynamics, without locking ourselves into one specific topology.</p>"
     },
     {
       "type": "text",
-      "value": "Step 2"
+      "value": "Lets freeze the network with an infected node to show the dynamics (it is also the star of our show, for now, so we'll make it a star)."
     },
     {
       "type": "text",
-      "value": "We scraped 9,300 wines off the popular app <a href=https://www.vivino.com/>Vivino</a> and used <a href=https://platform.openai.com/docs/guides/vision>Chat-GPT Vision</a> to help us categorize the animals on the labels with this prompt: <span class=prompt>This image is a wine label. Do you see any animals or humans on it?<a href=#methods></span> <span class=instructions >Read more in the methods.</span></a>"
+      "value": "Here, we’ll perform a simple Susceptible-Infected (SI) step among a node’s flickering neighbors — those it's currently connected to. In contagion processes, these are typically interpreted as the people you could influence or be influenced by. In a way, this momentary set of neighbors is your group.  <p>Granted, it’s a pretty rough definition of a group — in our little simulation, you might never see that exact same configuration of people again!</p>"
     },
     {
       "type": "text",
-      "value": "Sometimes it was spot on. It correctly identified all of these labels as birds even though the artistic styles were different."
+      "value": "Among neighbors we will select one random neighbor to maybe infect. Here's the lucky neighbor. Now with some probability (50%) we infect it."
     },
     {
       "type": "text",
-      "value": "But other times, we had to manually review and edit. GPT was particularly bad with elephants. <br><br> It also struggled when animals weren’t the focal point and with what counted as an “animal.” <br><br> Sometimes anthropomorphic or mythical creatures were included, sometimes not."
+      "value": "Success!"
     },
     {
       "type": "text",
-      "value": "After cleaning up the data we grouped the animals into broad categories based more on common perception than binomial nomenclature (genus and species) — sorry science purists — and omitted categories with fewer than 20 animals, leaving us with these 16 groupings. Here’s your <span class=selected-animal-span>original animal</span>."
+      "value": "Now that the SI step is done, repeat! We shuffle, we do a SI step. We shuffle, we do a SI step."
     },
     {
       "type": "text",
-      "value": "To get a general understanding of the wines, we found the median price of each animal group."
+      "value": "Ok, cool. What else."
     },
     {
       "type": "text",
-      "value": "Then we looked at the rating."
+      "value": "In the mean-field world, we can also start from the neighbors. They are the stars now. This view make more sense for complex contagion of social behaviors, but it works just fine with airborn diseases."
     },
     {
       "type": "text",
-      "value": "But that only gets us so far. What we really care about are the steals, wines whose <span class=bold>price is below the median</span> and whose <span class=bold>rating is above the median</span>. This is…"
+      "value": "In this case, we can think about the chance of your friends make you buy an iphone. In red, they are the red nodes again.<p>In threshold models, your decision isn't just a matter of one friend’s influence — it’s nonlinear. Once enough of your friends are on board, you hit a tipping point and adopt the behavior yourself.</p> <p>Here, we see that out of N friends, 4 are currently active. Are they enough to sway you?</p>"
+    },
+    {
+      "type": "text",
+      "value": "Huzzay, you got pressured by your friend to have a new iphone you absolutely didn't need!"
+    },
+    {
+      "type": "text",
+      "value": "Lets reset everything and move to quenched networks. This time around, we want our group to stick around (maybe too much)."
+    }
+  ],
+  "postIntro": [
+    {
+      "type": "text",
+      "value": "Ok. Now a way to make clearer the two limits of annealed vs quenched would be to take two nodes as reference, of which one is infected. "
+    },
+    {
+      "type": "text",
+      "value": "We let the dynamics run, taking note every time the two nodes are in contact — that is, measuring their contact duration. At an infection rate r = 0.2 (per second), it will take on average  t = 1/r = 5  seconds of contact for an infection to occur — at which point the susceptible node turns red. This is because we’re assuming a small probability of infection per unit of contact time. If each contact lasts s  seconds, then the probability of infection during that contact is approximately:<p>P(infection in contact) = 1 - exp(-r⋅s) ≈ r⋅s</p> <small>(for small s, the exponential approximates linearly)</small>.<p>So, if contacts are short — say  s = 1  second — it takes t/s = 5 contact events on average before the infection happens. Longer contacts mean infection is more likely to happen in a single encounter. Shorter contacts require repeated interactions.</p>"
+    },
+    {
+      "type": "text",
+      "value": "Now, we generalize this process to get the average s for many trials. Showing mutual information. "
+    },
+    {
+      "type": "text",
+      "value": "One more plot to show showing structural similarity and mutual information."
+    },{
+      "type": "text",
+      "value": "We're done with Scrolling!"
     }
   ]
 }

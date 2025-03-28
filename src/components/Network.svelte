@@ -1,91 +1,163 @@
-<script>
-    
-    import { scaleOrdinal } from "d3-scale"
-    
-    import Edges from "$components/SimpleLinks.svelte";
-    import Nodes from "$components/Nodes.svelte";
+<script lang="ts">
+	import { createInterval } from '$lib/utils/interval';
+	import {
+		resetNodes,
+		infectNode,
+		highlightConnectedNodes,
+		highlightRandomNeighbor,
+		infectRandomNeighbors,
+		highlightNode,
+		StarNode,
+		idConnectedNodes,
+	} from '$lib/utils/dynamics';
 
-    import { forceDirectedLayout } from "./ForceLayout.js";
-    import { radialLayout } from "./RadialLayout.js";
-    
-    let { value, width, height, nodes, links, padding } = $props();
+	import Manylinks from '$data/edges.json';
 
-    let innerWidth = $derived(width - padding.right);
-    let innerHeight = height - padding.top - padding.bottom;
+	import Edges from '$components/SimpleLinks.svelte';
+	import Nodes from '$components/Nodes.svelte';
 
-    let color_palette = ["#778da9", "#6a4c93", "#005f73", "#0a9396", "#94d2bd", "#e9d8a6", "#ee9b00", "#ca6702", "#bb3e03", "#ae2012", "#9b2226"]
-    let color_scale = scaleOrdinal([1,2,3,4,5], color_palette)
+	import { radialLayout } from '$lib/RadialLayout';
 
-    // Make data reactive
-    let initialData = nodes;
-    let renderedData = $state(initialData);
+	// Props
+	let { scrollyIndex, nodes, links, width, height, padding } = $props();
 
-    let nodes_xy = $state(radialLayout({ 
-        nodes, links, width, height: innerHeight 
-    }));
-    
+	// Layout dimensions
+	let innerHeight = height - padding.top - padding.bottom;
 
-    $effect(() => {
-        if (value == 0) {
-            renderedData = initialData;
-            nodes_xy.forEach(n => n.highlight = false);
-            links.forEach(l => l.highlight = false);
+	// Initial layout and state
+	let nodes_xy: Node[] = $state(radialLayout({ nodes, links, width, height: innerHeight }));
 
-        } else if (value == 1) {
-           // Step 1: Pick the main node (e.g. first one)
-            const mainNode = nodes_xy[0];
-            mainNode.highlight = true;
+	const mainNode = $derived(nodes_xy[0]);
 
-            // Step 2: Find connected nodes and highlight them
-            const connectedNodeIds = new Set();
+	let renderedLinks = $state(links);
 
-            links.forEach(link => {
-            const sourceId = typeof link.source === 'object' ? link.source.id : link.source;
-            const targetId = typeof link.target === 'object' ? link.target.id : link.target;
+	let index = $state(1);
+	let stopInterval: () => void = () => {};
 
-            if (sourceId === mainNode.id) {
-                connectedNodeIds.add(targetId);
-                link.highlight = true;
-            } else if (targetId === mainNode.id) {
-                connectedNodeIds.add(sourceId);
-                link.highlight = true;
-            }
-            });
+	let selectedNeighbor: string | null = $state(null); 
 
-            // Step 3: Highlight connected nodes
-            nodes_xy.forEach(n => {
-            if (connectedNodeIds.has(n.id)) {
-                n.highlight = true;
-            }
-            });
+	function takeOneStep(probability = 1.0) {
+		// 1. Update links (rewire)
+		index = (index + 1) % Manylinks.length;
+		renderedLinks = Manylinks[index];
 
-        } else if (value == 2) {
-            renderedData = initialData;
-            nodes_xy.forEach(n => n.highlight = false);
-            links.forEach(l => l.highlight = false); 
-        } else if (value == 3) {
-            nodes_xy = forceDirectedLayout({ 
-                nodes, links, width, height: innerHeight 
-            });
-        }  
-     });
+		// 2. Clear previous highlights
+		nodes_xy.forEach(n => n.highlight = false);
 
+		// 3. Wait a short time before attempting infection (so you can "see" the rewire)
+		setTimeout(() => {
+			const infectedNodes = nodes_xy.filter(n => n.infected);
+			const source = infectedNodes[Math.floor(Math.random() * infectedNodes.length)];
+			
+			if (infectedNodes.length === 0) return; // no one to spread from
+
+			const chosen = highlightRandomNeighbor(nodes_xy, renderedLinks, source.id);
+			
+			// 4. Optional: flicker highlight even if not infected
+			if (chosen) {
+				chosen.highlight = true;
+
+				// Short delay before infection so user sees flicker
+				setTimeout(() => {
+					infectNode(chosen, probability); // probabilistic infection
+				}, 800); // you can tweak this delay
+			}
+		}, 300); // delay between rewire and highlight
+	}
+
+	function runSteps(n: number, delay: number = 1000, probability: number = 1.0) {
+		let step = 0;
+
+		function doStep() {
+			if (step >= n) return;
+
+			takeOneStep(probability);
+			step++;
+
+			setTimeout(doStep, delay);
+		}
+
+		doStep();
+	}
+	
+
+	$effect(() => {
+		stopInterval();
+
+		switch (scrollyIndex) {
+			case 0:
+				resetNodes(nodes_xy, nodes);
+				mainNode.shape = undefined;
+				stopInterval = createInterval(() => {
+					index = (index + 1) % Manylinks.length;
+					renderedLinks = Manylinks[index];
+				}, 500);
+				break;
+
+			case 1:
+				StarNode(mainNode);
+				infectNode(mainNode);
+				nodes_xy.forEach(n => (n.highlight = false));
+				break;
+
+			case 2:
+				infectNode(mainNode);
+				highlightConnectedNodes(nodes_xy, renderedLinks, mainNode.id);
+				break;
+
+			case 3:
+				selectedNeighbor = highlightRandomNeighbor(nodes_xy, renderedLinks, mainNode.id);
+				break;
+
+			case 4:
+				if (selectedNeighbor) {
+					infectNode(selectedNeighbor)
+				}
+				break;
+			case 5:
+				setTimeout(() => runSteps(5, 1000 ,0.5), 0);
+				break;
+			case 6:
+				// PART II: complex contagion 
+				resetNodes(nodes_xy, nodes);
+				break
+			case 7:
+				idConnectedNodes(nodes_xy, renderedLinks, mainNode.id);
+				break				
+			case 8:
+				highlightNode(mainNode);
+				infectRandomNeighbors(nodes_xy, renderedLinks, mainNode.id, 4);
+				break;
+			case 9:
+				infectNode(mainNode);
+				break
+			case 10:
+				resetNodes(nodes_xy, nodes);
+				stopInterval = createInterval(() => {
+					index = (index + 1) % Manylinks.length;
+					renderedLinks = Manylinks[index];
+				}, 500);
+				break;
+		}
+
+		return () => stopInterval();
+});
 </script>
 
+
 <div class="chart-container">
-    <svg {width} {height}>
-        <text font-size="20px" stroke="black" stroke-width="0.5" x={innerWidth-20} y={padding.top-10}>2019</text>
-        <g class="inner-chart" transform="translate({padding.left-10}, {padding.top})">
-            <Edges {links} />
-            <Nodes nodes={nodes_xy} color_scale={color_scale} />
-    </svg>
+	<svg {width} {height}>
+		<g class="inner-chart">
+			<Edges links={renderedLinks} nodes={nodes_xy} />
+			<Nodes nodes={nodes_xy} />
+		</g>
+	</svg>
 </div>
 
 <style>
-
-  
-    :global(*) {
-      font-family: Inter;
-      -moz-osx-font-smoothing: grayscale;
-}  
+	:global(*) {
+		font-family: Inter;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	
 </style>

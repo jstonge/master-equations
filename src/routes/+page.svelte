@@ -7,7 +7,7 @@
 
 	let { data } = $props();
 
-
+	
 	// const { title, description, url, keywords } = copy;
 	setContext("copy", copy);
 	setContext("data", data);
