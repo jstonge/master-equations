@@ -2,7 +2,7 @@
     "steps": [
     {
       "type": "text",
-      "value": "<strong>Annealed network</strong> Annealed approximation let us deal directly with network ensemble. To do so, we reshuffle connections each frame of 500 millisecond, effectively drawing from network ensemble. This is the same than saying the network structure changes rapidly, with the dynamics happening at much lower rate than that of reshuffling. Why does it make sense? <p>Think back to the bouncing balls. On average, the more balls were infected the more likely you were to bump into one, creating a mean-field approximation. Since we are reshuffling connections, we are doing the same with annealed networks, but here we can study properties of the graphs on which the dynamics take place. What if shuffle networks, while preserving the degree distribution. This means we can study degree might influence dynamics, as with complex networks (degree distribution is heavy-tail).</p> "
+      "value": "Borrowed from metallurgy, annealing refers to the process of slowly cooling a metal so that its atomic structure settles into a stable — though not static — configuration. In network modeling, annealed networks refer to a similar idea: connections between nodes are not fixed, but constantly reshuffling, like social ties in a fast-moving crowd. <p>Annealed approximations let us work directly with a <u>network ensemble</u> — a family of possible network configurations. In practice, we implement this by reshuffling the network’s edges every 500 milliseconds, effectively sampling a new adjacency matrix each time. This corresponds to the assumption that network structure changes much faster than the dynamics evolving on top of it.</p> <p>But why does that make sense?</p> <p>Think back to the bouncing balls. On average, the more infected balls there were, the more likely you were to bump into one. That’s the essence of a <u>mean-field approximation</u> — we ignore the specific bump and just look at average exposure. Annealed networks work similarly: by rapidly reshuffling, we erase specific structures while preserving general patterns, like degree.</p> <p>And that opens up an interesting possibility. What if we reshuffle, but preserve the degree distribution? Now, we can explore how degree heterogeneity — like in complex networks with heavy-tailed distributions — influences the dynamics, without locking ourselves into one specific topology.</p>"
     },
     {
       "type": "text",
@@ -10,7 +10,7 @@
     },
     {
       "type": "text",
-      "value": "Here we do a SI step, among our flickering neighbors. In contagion process, this is typically thought as the people you can influence. In one way, this is your group!"
+      "value": "Here, we’ll perform a simple Susceptible-Infected (SI) step among a node’s flickering neighbors — those it's currently connected to. In contagion processes, these are typically interpreted as the people you could influence or be influenced by. In a way, this momentary set of neighbors is your group.  <p>Granted, it’s a pretty rough definition of a group — in our little simulation, you might never see that exact same configuration of people again!</p>"
     },
     {
       "type": "text",
@@ -22,7 +22,7 @@
     },
     {
       "type": "text",
-      "value": "Now that the SI step is done, repeat! We shuffle, we do a SI step. We shuffle, we do a SI step. Crazy stuff."
+      "value": "Now that the SI step is done, repeat! We shuffle, we do a SI step. We shuffle, we do a SI step."
     },
     {
       "type": "text",
@@ -30,11 +30,11 @@
     },
     {
       "type": "text",
-      "value": "Alternatively, we can start from the neighbors, some of which are activated. They are the stars now. This view make more sense for complex contagion of social behaviors, but it works just fine with airborn diseases."
+      "value": "In the mean-field world, we can also start from the neighbors. They are the stars now. This view make more sense for complex contagion of social behaviors, but it works just fine with airborn diseases."
     },
     {
       "type": "text",
-      "value": "In this case, we can think about the chance of your friends make you buy an iphone. In threshold models, it might be a nonlinear function whereas above a particular threshold you yourself get activated. Here, we see that among N number of friends, 4 have been activated. "
+      "value": "In this case, we can think about the chance of your friends make you buy an iphone. In red, they are the red nodes again.<p>In threshold models, your decision isn't just a matter of one friend’s influence — it’s nonlinear. Once enough of your friends are on board, you hit a tipping point and adopt the behavior yourself.</p> <p>Here, we see that out of N friends, 4 are currently active. Are they enough to sway you?</p>"
     },
     {
       "type": "text",
@@ -42,7 +42,7 @@
     },
     {
       "type": "text",
-      "value": "Lets reset everything and move to the QUENCH networks."
+      "value": "Lets reset everything and move to quenched networks. This time around, we want our group to stick around (maybe too much)."
     }
   ],
   "postIntro": [
@@ -52,7 +52,7 @@
     },
     {
       "type": "text",
-      "value": "We let go the dynamics, taking notes everytime they have a contact ('contact duration'). At infection rate **r=0.2** (per second, or frame) , it will take on average a contact time **t = 1/r** seconds for an infection to occur (at which point the other node turns red too). That is, since we have a a kind of probability of infection per contact, whereas the **P(infection occurs within s) = 1 - rs** and since s is small we get that infection probability is simple equals to rate *r** times duration **s**. If contacts last say **s** seconds each, it will take t/s seconds on average to pass the infection."
+      "value": "We let the dynamics run, taking note every time the two nodes are in contact — that is, measuring their contact duration. At an infection rate r = 0.2 (per second), it will take on average  t = 1/r = 5  seconds of contact for an infection to occur — at which point the susceptible node turns red. This is because we’re assuming a small probability of infection per unit of contact time. If each contact lasts s  seconds, then the probability of infection during that contact is approximately:<p>P(infection in contact) = 1 - exp(-r⋅s) ≈ r⋅s</p> <small>(for small s, the exponential approximates linearly)</small>.<p>So, if contacts are short — say  s = 1  second — it takes t/s = 5 contact events on average before the infection happens. Longer contacts mean infection is more likely to happen in a single encounter. Shorter contacts require repeated interactions.</p>"
     },
     {
       "type": "text",
@@ -61,6 +61,9 @@
     {
       "type": "text",
       "value": "One more plot to show showing structural similarity and mutual information."
+    },{
+      "type": "text",
+      "value": "We're done with Scrolling!"
     }
   ]
 }

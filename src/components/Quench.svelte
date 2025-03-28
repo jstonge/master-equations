@@ -10,6 +10,7 @@
 		StarNode,
 	} from '$lib/utils/dynamics';
 	
+	import { fade } from 'svelte/transition';
 
 	import Manylinks from '$data/edges.json';
 
@@ -25,7 +26,6 @@
     
 	
 	// Layout dimensions
-	let innerWidth = $derived(width - padding.right);
 	let innerHeight = height - padding.top - padding.bottom;
 	
 	// Initial layout and state
@@ -47,7 +47,6 @@
     const r = 0.2; // infection rate per second
     const infectionProbPerContact = r * (s / 1000); // convert ms to seconds
 
-	
     // State
     let contactTime = 0;
     let targetInfected = false;
@@ -111,18 +110,21 @@
             case 1:        
                 setTimeout(() => runSteps(10, s ), 0);
                 break;
+			case 2:
+				resetNodes(nodes_xy, nodes);
+
         }
     })
 
 </script>
 
 
-<div class="chart-container" bind:clientWidth={width}>
-	{#if scrollyIndex >= 2 }
+<div class="chart-container">
+	{#if scrollyIndex >= 2 && scrollyIndex <= 3}
 		<ScatterCorr {nodes} {nodes_xy} {Manylinks} {mainNode} {targetNode} {scrollyIndex}/>
 	{:else}
 		<svg {width} {height}>
-			<g class="inner-chart" transform="translate({padding.left - 10}, {padding.top})">
+			<g class="inner-chart">
 				<Edges links={renderedLinks} nodes={nodes_xy} />
 				<Nodes nodes={nodes_xy} />
 			</g>
@@ -136,6 +138,4 @@
 		font-family: Inter;
 		-moz-osx-font-smoothing: grayscale;
 	}
-
-  
 </style>

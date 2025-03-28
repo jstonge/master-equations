@@ -22,7 +22,6 @@
 	let { scrollyIndex, nodes, links, width, height, padding } = $props();
 
 	// Layout dimensions
-	// let innerWidth = $derived(width - padding.right);
 	let innerHeight = height - padding.top - padding.bottom;
 
 	// Initial layout and state
@@ -148,7 +147,7 @@
 
 <div class="chart-container">
 	<svg {width} {height}>
-		<g class="inner-chart" transform="translate({padding.left - 10}, {padding.top})">
+		<g class="inner-chart">
 			<Edges links={renderedLinks} nodes={nodes_xy} />
 			<Nodes nodes={nodes_xy} />
 		</g>

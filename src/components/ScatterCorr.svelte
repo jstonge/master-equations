@@ -1,10 +1,8 @@
 <script>
     import { onMount } from 'svelte';
     
-    import {interpolateViridis} from 'd3-scale-chromatic';
-	import {scaleLinear} from 'd3-scale';
+	import {group, mean} from 'd3-array';
 	import { LayerCake, Svg } from 'layercake'; // Import the LayerCake and Svg components from LayerCake
-	
 
     import Scatter from  '$components/layercake/Scatter.svelte';
 	import AxisX from    '$components/layercake/AxisX.svelte';
@@ -15,7 +13,13 @@
     let { nodes, nodes_xy, Manylinks, mainNode, targetNode, scrollyIndex } = $props();
 
     let data = $state([]);  
+	let averageDataS = $state([]);
+	let averageDataM = $state([]);
+	let selectedMetric = $state('pearsonR');
+
 	let loading = true;
+
+	const padding= { top: 60, right: 50, bottom: 50, left: 50 }
 
 	onMount(() => {
 		// Ensure nodes exist
@@ -43,54 +47,73 @@
 		worker.onmessage = (e) => {
 			data = [e.data];
 			loading = false;
-			// console.log(data[0])
+			console.log(data[0]);
+			averageDataS = Array.from(
+				group(data[0], d => d.s), // group by 's'
+				([s, entries]) => ({
+					s,
+					MI: mean(entries, d => d.MI),
+					correlationRatio: mean(entries, d => d.correlationRatio),
+					pearsonR: mean(entries, d => d.pearsonR),
+					structuralSimilarity: mean(entries, d => d.structuralSimilarity)
+				})
+			)
+			averageDataM = Array.from(
+				group(data[0], d => d.structuralSimilarity), // group by 's'
+				([structuralSimilarity, entries]) => ({
+					structuralSimilarity,
+					MI: mean(entries, d => d.MI),
+					correlationRatio: mean(entries, d => d.correlationRatio),
+					pearsonR: mean(entries, d => d.pearsonR)
+				})
+			)
 		};
 		
 	});
 
-    // LayerCake chart
-	const xKey = 's';
-	const yKeyLeft = 'MI';
-	const yKeyRight = 'structuralSimilarity';
-    
-    const colorScale = scaleLinear()
-		.domain([0, 1600]) // or use extent(data[0], d => d.structuralSimilarity)
-		.range([0, 1]) // domain for interpolator (0–1)
-		.clamp(true);
 </script>
 
-<div class="sc-chart-container">
-	<LayerCake 
-	  x={xKey}
-	  y={yKeyLeft}
-	  fill={yKeyRight}
-	  data={data[0]} 
-	  padding={{ top: 60, right: 50, bottom: 50, left: 50 }}
-	>
-	  <Svg>
-		<AxisX axisTitle={yKeyRight}/>
-		<AxisY axisTitle={yKeyLeft} dx={-3}/>
-		<Scatter fill={(d) => interpolateViridis(colorScale(d[yKeyRight]))} r={5} opacity={0.6}/>
-	  </Svg>
-	</LayerCake>
-</div>
-{#if scrollyIndex > 2}
-    <div class="sc-chart-container">
-        <LayerCake 
-        x={yKeyLeft}
-        y={yKeyRight}
-        fill={yKeyRight}
-        data={data[0]} 
-        padding={{ top: 60, right: 50, bottom: 50, left: 50 }}
-        >
-        <Svg>
-            <AxisX axisTitle={yKeyLeft}/>
-            <AxisY axisTitle={yKeyRight} dx={-3}/>
-            <Scatter fill={(d) => interpolateViridis(colorScale(d[xKey]))} r={5} />
-        </Svg>
-        </LayerCake>
-    </div>
-    
+{#if scrollyIndex > 1}
+	<!-- Metric selector -->
+	<div style="margin-bottom: 1rem;">
+		<label for="metric">Y Axis:</label>
+		<select id="metric" bind:value={selectedMetric} transition:fade={{ duration: 300 }}>
+		<option value="MI">Mutual Information</option>
+		<option value="pearsonR">Pearson Correlation</option>
+		<option value="correlationRatio">Correlation Ratio</option>
+		</select>
+	</div>
+	<div class="sc-chart-container">
+		<LayerCake 
+		x={"s"}
+		y={selectedMetric}
+		data={averageDataS} 
+		padding={padding}
+		>
+		<Svg>
+			<AxisX axisTitle={"s"}/>
+			<AxisY axisTitle={selectedMetric} dx={-3}/>
+			<Scatter />
+		</Svg>
+		</LayerCake>
+	</div>
+	{#if scrollyIndex > 2}
+		<div class="sc-chart-container">
+			<LayerCake 
+			x={'structuralSimilarity'}
+			y={selectedMetric}
+			data={averageDataM} 
+			padding={padding}
+			>
+			<Svg>
+				<AxisX axisTitle={'structuralSimilarity'}/>
+				<AxisY axisTitle={selectedMetric} dx={-3}/>
+				<Scatter fill={"black"} r={5} />
+			</Svg>
+			</LayerCake>
+		</div>
+		
+	{/if}
 {/if}
 
 <style>

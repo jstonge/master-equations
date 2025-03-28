@@ -1,12 +1,10 @@
 <script>
   import P5 from '$lib/P5.svelte';
   
-  let numBalls = $state(20);
+  let numBalls = $state(50);
   const RED_DURATION = 6000;
 
   let {width, height} = $props()
-  let padding = {top: 50, right: 20, bottom: 100, left: 20};
-  let innerWidth = width - padding.right;
   
   const sketch = (p5) => {
     let balls = [];
@@ -28,21 +26,30 @@
       }
 
       move() {
-        this.x += this.vx;
-        this.y += this.vy;
+    this.x += this.vx;
+    this.y += this.vy;
 
-        if (this.x <= this.r || this.x >= p5.width - this.r) {
-          this.vx *= -1;
-        }
+    if (this.x < this.r) {
+      this.vx *= -1;
+      this.x = this.r;
+    } else if (this.x > p5.width - this.r) {
+      this.vx *= -1;
+      this.x = p5.width - this.r;
+    }
 
-        if (this.y <= this.r || this.y >= p5.height - this.r) {
-          this.vy *= -1;
-        }
-      }
+    if (this.y < this.r) {
+      this.vy *= -1;
+      this.y = this.r;
+    } else if (this.y > p5.height - this.r) {
+      this.vy *= -1;
+      this.y = p5.height - this.r;
+    }
+  }
+
 
       display() {
-        p5.fill(this.isRed() ? 'red' : 'white');
-        p5.noStroke();
+        p5.fill(this.isRed() ? '#ff4d4d' : 'black');
+        p5.strokeWeight(1.2);
         p5.ellipse(this.x, this.y, this.r * 2);
       }
 
@@ -102,7 +109,7 @@
     let prevNumBalls = null;
 
     p5.setup = () => {
-      p5.createCanvas(innerWidth, height);
+      p5.createCanvas(width, height);
       initBalls();
     };
 
@@ -116,7 +123,7 @@
             p5.random(50, p5.height - 50),
             p5.random(-2, 2),
             p5.random(-2, 2),
-            10,
+            7,
             isInitialRed
           )
         );
@@ -125,7 +132,7 @@
     }
 
     p5.draw = () => {
-      p5.background(0);
+      p5.background('#f9f9f9');
 
       if (numBalls !== prevNumBalls) {
         initBalls();
@@ -149,28 +156,29 @@
   };
 </script>
 
+<label>
+  Ball count
+  <input type="range" bind:value={numBalls} min="1" max="100" />
+  {numBalls}
+</label>
 <div class="chart-container">  
-  <label>
-    Ball count
-    <input type="range" bind:value={numBalls} min="1" max="100" />
-    {numBalls}
-  </label>
   <P5 {sketch} />
 </div>
 
 
 <style>
+  :global(canvas) {
+    display: block;
+  }
+  
   .chart-container {
-    padding: 1rem;
     position: relative;
-    margin-right: 1rem;
-    margin-left: 1rem;
+    margin: 1rem auto;
 
-    background: white;
-    border-radius: 6px;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid #000; /* black border */
+    border-radius: 6px;      /* optional, for rounded corners */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
 
-    /* Optional */
     max-width: 700px;
     max-height: 450px;
   }

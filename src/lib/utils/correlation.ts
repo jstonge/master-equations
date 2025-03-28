@@ -154,14 +154,26 @@ export function runCorrelationStats(
       safeTerm(p11, p_i_1, p_j_1);
 
       
-    console.log(`p00=${p00}, p01=${p01}, p10=${p10}, p11=${p11}, p_i_0=${p_i_0}, p_i_1=${p_i_1}, p_j_0=${p_j_0}, p_j_1=${p_j_1}, MI=${MI}, structuralSimilarity=${structuralSimilarity}`);
+    // console.log(`p00=${p00}, p01=${p01}, p10=${p10}, p11=${p11}, p_i_0=${p_i_0}, p_i_1=${p_i_1}, p_j_0=${p_j_0}, p_j_1=${p_j_1}, MI=${MI}, structuralSimilarity=${structuralSimilarity}`);
+
+	const E_X = p_i_1;
+	const E_Y = p_j_1;
+	const E_XY = p11;
+
+	const varX = E_X * (1 - E_X);
+	const varY = E_Y * (1 - E_Y);
+	const covXY = E_XY - E_X * E_Y;
+
+	const pearsonR = varX > 0 && varY > 0 ? covXY / Math.sqrt(varX * varY) : 0;
+
 
 	return {
 		s,
 		p_10,
 		p_i,
 		p_j_not,
-		ratio,
+		correlationRatio: ratio, // renamed
+		pearsonR,
 		MI,
         structuralSimilarity
 	};

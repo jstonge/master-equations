@@ -3,12 +3,15 @@
 
 	import Network from "$components/Network.svelte";
 	import Quench from "$components/Quench.svelte";
+	import ForceNetwork from "$components/ForceNetwork.svelte";
     import Scrolly from "$components/helpers/Scrolly.svelte";
-    // import BouncingBalls from "$components/Bouncing.svelte";
     import Hero from "$components/Hero.svelte";
 
     import nodes from "$data/nodes.csv";
+    import nodes_all from "$data/nodelist_all.csv";
     import Manylinks from "$data/edges.json";
+    import links_all from "$data/edgelist_all.csv";
+    
     
     // First entry is the original data
     let links = Manylinks[0]
@@ -18,10 +21,10 @@
     const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    let width = $state(400),
+    let width = 400,
         height = 600;
     
-    const padding = {top: 50, right: 40, bottom: 100, left: 100};
+    const padding = {top: 20, right: 40, bottom: 20, left: 100};
     
     let scrollyIndex = $state(); // reactive scrollIndex
 </script>
@@ -30,11 +33,15 @@
 <Hero />
 
 <section id="mean-field">
-    
-    <p>The following is a <a href="https://www.w3schools.com/howto/howto_css_sticky_element.asp">sticky chart</a>. As you scroll down, it'll stick to your window.</p>
+    <h2>Annealing</h2>
+    <p>During Covid-19, the Washington Post publised the <a url="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">corona-simulator</a>. The animation by Harry Stevens took place in the billard ball world; the quintessential simulation world. It examined how different public health measures influenced the dynamics of the systems; what if people did social distancing, or quantines when sick. Underlying the physical world lies a couple of hidden assumptions, e.g. the width of your browser should determine the density of nodes in the canvas, but not in Steven's simulation. As a good modeler, Stevens conclude on how wrong is that representation, but nonetheless useful.</p>
+    <p>Cool.</p>
+    <p>With complex systems, we can do better — we have networks. The powerful thing about networks is that they let us represent how social structures shape the dynamics of contagion. Who talks to whom, who touches whom, who works or lives with whom — all of that matters.</p>
+    <p>But doing math on exact networks can get… messy. It’s often unwieldy to carry full structure through the equations. So instead, people often model the average effect of the dynamics — smoothing over the specific network in favor of general trends.</p>
+    <p>To preserve some notion of structure without going fully detailed, modelers sometimes use what’s called an <u>annealed approximation</u>.</p>
 
-    <div class="chart-container-scrolly" bind:clientWidth={width}>
-        <Network {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
+    <div class="chart-container-scrolly" >
+        <Network {scrollyIndex} {nodes} {links} {width} {height} {padding} isRadial={true}/>
     </div>
 
     <!-- <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2> -->
@@ -53,7 +60,7 @@
     
 </section>
 
-<p>We keep going after. Mean-field theory is a powerful approximation, but it also has a fundamental drawback; it washes away persistent group interactions. It can somewhat ephemeral group interactions, which can be fairly inclusive as a process. For instance, many models of higher-order interactions are about paper coauthorships, where the ephemerality of the interactions is the span it takes to publish a paper. </p>
+<p>The annealed assumption is a powerful one, but it also has a fundamental drawback; it washes away persistent group interactions. In that sense, this is terrible (but still slightly better than the bouncing ball world). It can somewhat ephemeral group interactions, which can be fairly inclusive as a process. For instance, many models of <u>higher-order interactions</u> (or complex contagion) are about paper coauthorships, where the ephemerality of the interactions is the span it takes to publish a paper. It might be good enough.</p>
 
 <p>But workplace and households are both great example of group behaviors that are so persistent that it influences the dynamics in ways that mean-field just cannot. If your kid get sick, the chances are that the rest of the household will get sick too. There is <em>dynamical correlation</em> between the states of individuals within the household.</p>
 
@@ -63,7 +70,6 @@
         <Quench {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
     </div>
 
-    <!-- <h2>Scrolly <span>{scrollyIndex || "-"}</span></h2> -->
     <div class="spacer"></div>
     <Scrolly bind:value={scrollyIndex}>
             {#each postIntro as text, i}
@@ -80,7 +86,29 @@
 </section>
  
 
+<p>This is it, now you should have a better idea what physicists mean when they say that annealed networks are thought to be reshuffled constantly, leading to the system the relax faster than the dynamics. In contrast, quench changes slowly compared to the dynamics, meaning that local structures can strongly influence the dynamics.</p>
+
+<h3>Bonus content</h3>
+
+<p>For your information, the network we've been using is that of the coauthorship at the Vermont Complex System Institute (VCSI) for the year 2019. More precisely, the projection of the coauthorship networks whereas people share papers.</p>
+
+<div class="chart-container" >
+    <ForceNetwork {nodes} {links} width={1200} height={500} {padding}/>
+</div>
+
+<p>The projection is kinda dumb; is two people have been one the same paper, we simply draw an edge between them. Sure, the weight help see which coauthors are coauthoring more often together, but it means we end up with a lot of perhaps superfluous links. What does the raw data looks like? </p>
+
+<div class="full-chart-container" >
+    <ForceNetwork nodes={nodes_all} links={links_all} width={1200} height={800} {padding}/>
+</div>
+
 <style>
+    .full-chart-container {
+        width: 100%;
+        max-width: 1200px;
+        margin: 2rem auto;
+    }
+
     :global(html, body) {
             margin: 0;
             background-color: #f9f9f9; /* Light background */
@@ -90,15 +118,13 @@
     /* Ensures spacing between sections */
     section,
     p {
-        margin-top: 2rem; /* Adds space between elements */
-        margin-bottom: 4rem; /* Adds space between elements */
+        margin: 2rem 4rem;
+        
     }
 
     .chart-container-scrolly {
         width: 40%;
-        background: white;
         height: 550px;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
         position: sticky;
         top: 15%;
         right: 5%;
@@ -106,26 +132,16 @@
     }
 
 
-    h2 {
-        position: sticky;
-        top: 4em;
-        margin-left: -85%;
-    }
-
     .spacer {
         height: 75vh;
     }
 
     .step {
         height: 80vh;
-        display: flex;
-        /* Makes it a flexbox */
-        place-items: center;
-        /* Centers vertically */
-        justify-content: center;
-        /* Centers horizontally */
-        margin-left: -45%;
-        /* Moves it slightly to the left */
+        display: flex; /* Makes it a flexbox */
+        place-items: center; /* Centers vertically */
+        justify-content: center; /* Centers horizontally */
+        /* margin-left: -55%; Moves it slightly to the left */
     }
 
     /* This is affect children p of class .step */
@@ -141,7 +157,8 @@
         transition: background 500ms ease;
         box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
         z-index: 10;
-        width: 20%;
+        width: 40%;
+        transform: translateX(-60%); /* shifts left to center within the left half */
     }
 
 
@@ -167,21 +184,23 @@
             z-index: 0;
             box-shadow: none;
             background: none;
+            
         }
 
         .step {
             margin-left: 0;
             padding: 0 1rem;
+            justify-content: center; 
         }
 
         .step p {
             width: 100%;
             max-width: 600px;
+            margin: 0 auto;          /* ✅ center horizontally */
+		    text-align: center;      /* optional: center the text itself */
+            transform: none; /* ✅ Cancel out the leftward shift on small screens */
         }
 
-        h2 {
-            margin-left: 0;
-        }
         }
 
         

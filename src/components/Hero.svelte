@@ -17,16 +17,15 @@
     </a>
   
     <div class="hero-content">
-      <h1>Hello master equations</h1>
-  
+      <h1>Networks, Fast and Slow</h1>
+      
       <div class="centered-layout">
         <div class="text-block">
-          <h3>We investigate annealed networks and their relationship to so-called quenched.</h3>
-          <h3>On the right, we have the most quintessential example of a contagion: the billiard ball world.</h3>
-          <h3>We argue this is all wrong, but not for the same reason as usual.</h3>
+          <p>Networks are powerful because they let us study both the structure and dynamics of social systems. How far your gossip travels, how quickly a disease spreads, or whether an idea catches on all depend not just on who is involved — but how they are connected. Yet, modelers often simplify these systems by focusing on the average behavior of a process, as if interactions happen at random.</p>
+          <p>Social contact patterns are far from random. Some interactions are fleeting, like a conversation with a stranger on a train. Others are deeply persistent, like sharing a household or workplace. These differences matter — and they define two fundamentally different modeling regimes; <strong><u>annealed</u></strong> and <strong><u>quenched</u></strong> networks</p>
         </div>
         <div>
-          <BouncingBalls width={600} height={300} />
+          <BouncingBalls width={600} height={350} />
         </div>
       </div>
     </div>
@@ -34,30 +33,17 @@
   
   <style>
 
-     h1 {
-        font-size: 2.5rem;
-        font-weight: bold;
-        text-transform: uppercase;
-
-    }       
-
-    h3 {
-        color: #aaa8a8;
-        font-size: 1.5rem;
-        font-style: italic;
-    }
-
 
     /* Full-height hero with background gradient */
     .hero-banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: 1rem;
-}
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
 
-  
+      
     /* GitHub link positioning */
     .github-link {
       position: absolute;
@@ -87,9 +73,15 @@
     .hero-content h1 {
         margin: 0 0 rem;
         font-size: 2.5rem;
-         margin-top: 0;
+        margin-top: 1rem;
         font-weight: bold;
-        text-transform: uppercase;
+    }
+    
+
+    .hero-content p {
+        color: #5e5a5a;
+        font-size: 1.2rem;
+        font-style: italic;
     }
     
     /* Your row layout: text on the left, chart on the right */
@@ -108,6 +100,7 @@
         
     /* Stack vertically on smaller screens */
     @media (max-width: 1200px) {
+
       .centered-layout {
         flex-direction: column;
         align-items: center;

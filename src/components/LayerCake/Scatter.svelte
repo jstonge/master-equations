@@ -4,6 +4,7 @@
  -->
  <script>
     import { getContext } from 'svelte';
+    import { fade } from 'svelte/transition';
   
     const { data, xGet, yGet, xScale, yScale } = getContext('LayerCake');
   
@@ -23,6 +24,7 @@
     export let opacity = 1;
 
     const isFunction = (f) => typeof f === 'function';
+    
   </script>
   
   <g class="scatter-group">
@@ -35,6 +37,7 @@
         fill={isFunction(fill) ? fill(d) : fill}
         {stroke}
         stroke-width={strokeWidth}
+        transition:fade={{ duration: 300 }}
       />
     {/each}
   </g>

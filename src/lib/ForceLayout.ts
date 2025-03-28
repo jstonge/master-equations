@@ -1,15 +1,43 @@
 import type { Node, Link } from '$lib/types';
-// layouts/forceDirected.js
-import { forceSimulation, forceManyBody, forceCenter, forceLink, forceCollide } from "d3-force";
+import { clone } from '$lib/utils/correlation';
+import {
+	forceSimulation,
+	forceManyBody,
+	forceLink,
+	forceCollide,
+	forceX,
+	forceY
+} from 'd3-force';
 
-export function forceDirectedLayout({ nodes: Node, links: Link, width: number, height: number, iterations = 1000 }): Node {
-  const simulation = forceSimulation(nodes)
-    .force("link", forceLink(links).id(d => d.id).distance(80).strength(0.1))
-    .force("charge", forceManyBody().strength(-100))
-    .force("center", forceCenter(width, height / 1.5))
-    .force("collision", forceCollide(15))
-    .stop();
+export function forceDirectedLayout({
+	nodes,
+	links,
+	width,
+	height,
+	iterations = 1000
+}: {
+	nodes: Node[];
+	links: Link[];
+	width: number;
+	height: number;
+	iterations?: number;
+}): Node[] {
+	const clonedNodes = clone(nodes);
+	const simulation = forceSimulation(clonedNodes)
+		.force(
+			'link',
+			forceLink<Node, Link>(links)
+				.id(d => d.id)
+				.distance(100)
+				.strength(0.05)
+		)
+		.force('charge', forceManyBody().strength(-100)) // repulsion to spread out
+		.force('collision', forceCollide(18)) // space between nodes
+		.force('x', forceX(width / 2).strength(0.03)) 
+		.force('y', forceY(height / 2).strength(0.05)) 
+		.stop();
 
-  for (let i = 0; i < iterations; ++i) simulation.tick();
-  return simulation.nodes(); // nodes now have updated x/y
+	for (let i = 0; i < iterations; ++i) simulation.tick();
+
+	return simulation.nodes() as Node[];
 }
