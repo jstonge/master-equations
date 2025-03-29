@@ -8,9 +8,9 @@
     import Hero from "$components/Hero.svelte";
 
     import nodes from "$data/nodes.csv";
-    // import nodes_all from "$data/nodelist_all.csv";
+    import nodes_all from "$data/nodelist_all.csv";
     import Manylinks from "$data/edges.json";
-    // import links_all from "$data/edgelist_all.csv";
+    import links_all from "$data/edgelist_all.csv";
     
     
     // First entry is the original data
@@ -21,7 +21,7 @@
     const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    let width = 400,
+    let width = $state(500),
         height = 600;
     
     const padding = {top: 20, right: 40, bottom: 20, left: 100};
@@ -33,7 +33,7 @@
 <Hero />
 
 <section id="mean-field">
-    <h2>Annealing</h2>
+    <h2>Part I: Annealing</h2>
     <p>But doing math on exact networks can get… messy. It’s often unwieldy to carry full structure through the equations. So instead, people often model the average effect of the dynamics — smoothing over the specific network in favor of general trends.</p>
     <p>To preserve some notion of structure without going fully detailed, modelers sometimes use what’s called an <u>annealed approximation</u>.</p>
     <p>Borrowed from metallurgy, annealing refers to the process of slowly cooling a metal so that its atomic structure settles into a stable — though not static — configuration. In network modeling, annealed networks refer to a similar idea: connections between nodes are not fixed, but constantly reshuffling, like social ties in a fast-moving crowd. <p>But why does that make sense? Think back to the bouncing balls. On average, the more infected balls there were, the more likely you were to bump into one. That’s the essence of a <u>mean-field approximation</u> — we ignore the specific bump and just look at average exposure.</p>
@@ -57,11 +57,11 @@
     
 </section>
 
-<p>The annealed assumption is a powerful one, but it also has a fundamental drawback; it washes away persistent group interactions. In that sense, this is terrible (but still slightly better than the bouncing ball world). It can somewhat ephemeral group interactions, which can be fairly inclusive as a process. For instance, many models of <u>higher-order interactions</u> (or complex contagion) are about paper coauthorships, where the ephemerality of the interactions is the span it takes to publish a paper. It might be good enough.</p>
-
-<p>But workplace and households are both great example of group behaviors that are so persistent that it influences the dynamics in ways that mean-field just cannot. If your kid get sick, the chances are that the rest of the household will get sick too. There is <em>dynamical correlation</em> between the states of individuals within the household.</p>
 
 <section id="mean-field-versus-quench">
+    <h2>Part II: Quenching</h2>
+    <p>The annealed assumption is a powerful one, but it also has a fundamental drawback; it washes away persistent group interactions. In that sense, this is terrible (but still slightly better than the bouncing ball world). It can somewhat ephemeral group interactions, which can be fairly inclusive as a process. For instance, many models of <u>higher-order interactions</u> (or complex contagion) are about paper coauthorships, where the ephemerality of the interactions is the span it takes to publish a paper. It might be good enough.</p>
+    <p>But workplace and households are both great example of group behaviors that are so persistent that it influences the dynamics in ways that mean-field just cannot. If your kid get sick, the chances are that the rest of the household will get sick too. There is <em>dynamical correlation</em> between the states of individuals within the household.</p>
     
     <div class="chart-container-scrolly">
         <Quench {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
@@ -82,22 +82,24 @@
     
 </section>
  
-
+<section class="bonus">
 <p>This is it, now you should have a better idea what physicists mean when they say that annealed networks are thought to be reshuffled constantly, leading to the system the relax faster than the dynamics. In contrast, quench changes slowly compared to the dynamics, meaning that local structures can strongly influence the dynamics.</p>
 
 <h3>Bonus content</h3>
+    <p>For your information, the network we've been using is that of the coauthorship at the Vermont Complex System Institute (VCSI) for the year 2019. More precisely, the projection of the coauthorship networks whereas people share papers.</p>
 
-<p>For your information, the network we've been using is that of the coauthorship at the Vermont Complex System Institute (VCSI) for the year 2019. More precisely, the projection of the coauthorship networks whereas people share papers.</p>
+    
+    <div class="chart-container">
+        <ForceNetwork {nodes} {links} {width} height={500} {padding}/>
+    </div>
 
-<div class="chart-container" >
-    <ForceNetwork {nodes} {links} width={400} height={500} {padding}/>
-</div>
+    <p>The projection is kinda dumb; is two people have been one the same paper, we simply draw an edge between them. Sure, the weight help see which coauthors are coauthoring more often together, but it means we end up with a lot of perhaps superfluous links. What does the raw data looks like? (WIP)</p>
+    
+    <!-- <div class="full-chart-container">
+        <ForceNetwork nodes={nodes_all} links={links_all} {width} height={800} {padding}/>
+    </div> -->
+</section>
 
-<p>The projection is kinda dumb; is two people have been one the same paper, we simply draw an edge between them. Sure, the weight help see which coauthors are coauthoring more often together, but it means we end up with a lot of perhaps superfluous links. What does the raw data looks like? </p>
-
-<!-- <div class="full-chart-container" >
-    <ForceNetwork nodes={nodes_all} links={links_all} width={1200} height={800} {padding}/>
-</div> -->
 
 <style>
     /* .full-chart-container {
@@ -140,6 +142,12 @@
         right: 5%;
         margin-left: auto;
     }
+    
+    .chart-container {
+        width: fit-content;     /* or a fixed width if you prefer */
+        margin: 0 auto;
+        display: block;
+        }
 
 
     .spacer {
@@ -196,6 +204,13 @@
             background: none;
             
         }
+        
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            padding: 0rem 0;
+            }
 
         section,
         h2,

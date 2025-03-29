@@ -75,7 +75,13 @@
     .nodes {
       filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
     }
-  
+    
+    circle {
+        transition: r 300ms ease, opacity 500ms ease,
+        cx 500ms cubic-bezier(0.76, 0, 0.24, 1),
+        cy 500ms cubic-bezier(0.76, 0, 0.24, 1); /* https://easings.net/#easeInOutQuart */
+        cursor: pointer;
+    }
 
     @keyframes flicker {
     0%, 100% {

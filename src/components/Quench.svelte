@@ -1,6 +1,6 @@
 <script lang="ts">
-	// import { createInterval } from '$lib/utils/interval';
 	
+	import { createInterval } from '$lib/utils/interval';
 	import type { Node, Link } from '$lib/types';
 	import {
 		resetNodes,
@@ -41,7 +41,7 @@
 
 	let index = $state(1);
 	let stopInterval: () => void = () => {};
-
+	let cumulativeTime = $state(0);
     // Simulation parameters
     const s = 500; // contact frame duration (1000ms = 1s per frame)
     const r = 0.2; // infection rate per second
@@ -67,6 +67,7 @@
             if (!targetInfected && Math.random() < infectionProbPerContact) {
                 infectNode(targetNode);
                 targetInfected = true;
+				cumulativeTime += contactTime;
                 console.log("Infected after", contactTime, "seconds of cumulative contact.");
             }
         } else {
@@ -108,12 +109,18 @@
 				break;
             
             case 1:        
-                setTimeout(() => runSteps(10, s ), 0);
+                setTimeout(() => runSteps(20, s ), 0);
                 break;
 			case 2:
 				resetNodes(nodes_xy, nodes);
+				stopInterval = createInterval(() => {
+					index = (index + 1) % Manylinks.length;
+					renderedLinks = Manylinks[index];
+				}, 500);
 
         }
+		
+		return () => stopInterval();
     })
 
 </script>
