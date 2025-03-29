@@ -1,32 +1,32 @@
 <script lang="ts">    
     import { getContext } from "svelte";
 
-	// import Network from "$components/Network.svelte";
+	import Network from "$components/Network.svelte";
 	// import Quench from "$components/Quench.svelte";
 	// import ForceNetwork from "$components/ForceNetwork.svelte";
     // import Scrolly from "$components/helpers/Scrolly.svelte";
     // import Hero from "$components/Hero.svelte";
 
-    // import nodes from "$data/nodes.csv";
+    import nodes from "$data/nodes.csv";
     // import nodes_all from "$data/nodelist_all.csv";
     import Manylinks from "$data/edges.json";
     // import links_all from "$data/edgelist_all.csv";
     
     
     // First entry is the original data
-    // let links = Manylinks[0]
+    let links = Manylinks[0]
 
     const copy = getContext("copy");    
-    // const steps = copy.steps;
-    // const postIntro = copy.postIntro;
+    const steps = copy.steps;
+    const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    // let width = 400,
-    //     height = 600;
+    let width = 400,
+        height = 600;
     
-    // const padding = {top: 20, right: 40, bottom: 20, left: 100};
+    const padding = {top: 20, right: 40, bottom: 20, left: 100};
     
-    // let scrollyIndex = $state(); // reactive scrollIndex
+    let scrollyIndex = $state(); // reactive scrollIndex
 </script>
     
 
@@ -115,7 +115,7 @@
     }    
         
     /* Ensures spacing between sections */
-    /* section, */
+    section,
     p {
         margin: 2rem 4rem;
         
