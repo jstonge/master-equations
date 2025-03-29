@@ -34,11 +34,9 @@
 
 <section id="mean-field">
     <h2>Annealing</h2>
-    <p>During Covid-19, the Washington Post publised the <a url="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">corona-simulator</a>. The animation by Harry Stevens took place in the billard ball world; the quintessential simulation world. It examined how different public health measures influenced the dynamics of the systems; what if people did social distancing, or quantines when sick. Underlying the physical world lies a couple of hidden assumptions, e.g. the width of your browser should determine the density of nodes in the canvas, but not in Steven's simulation. As a good modeler, Stevens conclude on how wrong is that representation, but nonetheless useful.</p>
-    <p>Cool.</p>
-    <p>With complex systems, we can do better — we have networks. The powerful thing about networks is that they let us represent how social structures shape the dynamics of contagion. Who talks to whom, who touches whom, who works or lives with whom — all of that matters.</p>
     <p>But doing math on exact networks can get… messy. It’s often unwieldy to carry full structure through the equations. So instead, people often model the average effect of the dynamics — smoothing over the specific network in favor of general trends.</p>
     <p>To preserve some notion of structure without going fully detailed, modelers sometimes use what’s called an <u>annealed approximation</u>.</p>
+    <p>Borrowed from metallurgy, annealing refers to the process of slowly cooling a metal so that its atomic structure settles into a stable — though not static — configuration. In network modeling, annealed networks refer to a similar idea: connections between nodes are not fixed, but constantly reshuffling, like social ties in a fast-moving crowd. <p>But why does that make sense? Think back to the bouncing balls. On average, the more infected balls there were, the more likely you were to bump into one. That’s the essence of a <u>mean-field approximation</u> — we ignore the specific bump and just look at average exposure.</p>
 
     <div class="chart-container-scrolly" >
         <Network {scrollyIndex} {nodes} {links} {width} {height} {padding} isRadial={true}/>
@@ -107,18 +105,31 @@
         max-width: 1200px;
         margin: 2rem auto;
     } */
+     
 
     :global(html, body) {
             margin: 0;
-            background-color: #f9f9f9; /* Light background */
-            text-align: center; /* Ensures all content is centered */
+            background-color: "whitesmoke"; /* Light background */
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+            "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }    
         
     /* Ensures spacing between sections */
     section,
+    h2,
+    h3,
     p {
-        margin: 2rem 4rem;
-        
+        color: #1a1a1a;
+        text-align: left;
+        margin: 2rem 10rem; /* top/bottom: 2rem, left/right: 6rem */
+    }
+
+    section h2 {
+        font-size: 36px;
+    }
+
+    section p {
+        font-size: 22px;
     }
 
     .chart-container-scrolly {
@@ -187,8 +198,14 @@
         }
 
         section,
+        h2,
+        h3,
         p {
-            margin: 1rem; /* significantly reduce horizontal margin on small screens */
+            margin: 1rem 1rem; /* top/bottom: 2rem, left/right: 6rem */
+        }
+
+        section p {
+            font-size: 18px;
         }
 
         .step {

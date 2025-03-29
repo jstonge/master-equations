@@ -2,15 +2,15 @@
     "steps": [
     {
       "type": "text",
-      "value": "Borrowed from metallurgy, annealing refers to the process of slowly cooling a metal so that its atomic structure settles into a stable — though not static — configuration. In network modeling, annealed networks refer to a similar idea: connections between nodes are not fixed, but constantly reshuffling, like social ties in a fast-moving crowd. <p>Annealed approximations let us work directly with a <u>network ensemble</u> — a family of possible network configurations. In practice, we implement this by reshuffling the network’s edges every 500 milliseconds, effectively sampling a new adjacency matrix each time. This corresponds to the assumption that network structure changes much faster than the dynamics evolving on top of it.</p> <p>But why does that make sense?</p> <p>Think back to the bouncing balls. On average, the more infected balls there were, the more likely you were to bump into one. That’s the essence of a <u>mean-field approximation</u> — we ignore the specific bump and just look at average exposure. Annealed networks work similarly: by rapidly reshuffling, we erase specific structures while preserving general patterns, like degree.</p> <p>And that opens up an interesting possibility. What if we reshuffle, but preserve the degree distribution? Now, we can explore how degree heterogeneity — like in complex networks with heavy-tailed distributions — influences the dynamics, without locking ourselves into one specific topology.</p>"
+      "value": "Annealed networks work similarly: by rapidly reshuffling, we erase specific structures while preserving general patterns, like degree. <p>We implement this by reshuffling the network’s edges every 500 milliseconds, effectively sampling a new adjacency matrix each time. This corresponds to the assumption that network structure changes much faster than the dynamics evolving on top of it.</p>"
     },
     {
       "type": "text",
-      "value": "Lets freeze the network with an infected node to show the dynamics (it is also the star of our show, for now, so we'll make it a star)."
+      "value": "Lets freeze the network with an infected node to show the dynamics (it is also the star of our show, for now, so we'll make it a star). <p>We’ll perform a simple Susceptible-Infected step among a node’s flickering neighbors — those it's currently connected to. </p>"
     },
     {
       "type": "text",
-      "value": "Here, we’ll perform a simple Susceptible-Infected (SI) step among a node’s flickering neighbors — those it's currently connected to. In contagion processes, these are typically interpreted as the people you could influence or be influenced by. In a way, this momentary set of neighbors is your group.  <p>Granted, it’s a pretty rough definition of a group — in our little simulation, you might never see that exact same configuration of people again!</p>"
+      "value": "In contagion processes, these are typically interpreted as the people you could influence or be influenced by. In a way, this momentary set of neighbors is your group.  <p>Granted, it’s a pretty rough definition of a group — in our little simulation, you might never see that exact same configuration of people again!</p>"
     },
     {
       "type": "text",

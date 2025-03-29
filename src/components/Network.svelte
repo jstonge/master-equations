@@ -115,7 +115,7 @@
 				}
 				break;
 			case 5:
-				setTimeout(() => runSteps(5, 1000 ,0.5), 0);
+				setTimeout(() => runSteps(10, 1000 ,0.5), 0);
 				break;
 			case 6:
 				// PART II: complex contagion 

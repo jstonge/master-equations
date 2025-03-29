@@ -3,7 +3,6 @@
   </script>
   
   <div class="hero-banner">
-    <!-- GitHub link with logo -->
     <a
       class="github-link"
       href="https://github.com/jstonge/master-equations/"
@@ -17,99 +16,122 @@
     </a>
   
     <div class="hero-content">
-      <h1>Networks, Fast and Slow</h1>
-      
       <div class="centered-layout">
-        <div class="text-block">
-          <p>Networks are powerful because they let us study both the structure and dynamics of social systems. How far your gossip travels, how quickly a disease spreads, or whether an idea catches on all depend not just on who is involved — but how they are connected. Yet, modelers often simplify these systems by focusing on the average behavior of a process, as if interactions happen at random.</p>
-          <p>Social contact patterns are far from random. Some interactions are fleeting, like a conversation with a stranger on a train. Others are deeply persistent, like sharing a household or workplace. These differences matter — and they define two fundamentally different modeling regimes; <strong><u>annealed</u></strong> and <strong><u>quenched</u></strong> networks</p>
+        <div class="text-side">
+          <h1>Networks, Fast and Slow</h1>
+          <div class="text-block">
+            <p>By <a href="https://jstonge.vercel.app/about">Jonathan St-Onge</a> and <a href="">Giulio Burgio</a>.</p>
+            <p>During Covid-19, the Washington Post publised the <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">corona-simulator</a>. The animation took place in the quintessential simulation world; the billard ball world. It examined how different public health measures influenced the dynamics of the systems; what if people did social distancing, or quantines when sick.</p>
+            <p>With networks, we can represent how social structures shape the dynamics of contagion. Who talks to whom, who touches whom, who works or lives with whom — all of that matters.</p>
+            <p>Some interactions are fleeting, like a conversation with a stranger on a train. Others are deeply persistent, like sharing a household or workplace. These differences matter — and they define two fundamentally different modeling regimes; <strong><a href="https://en.wikipedia.org/wiki/Simulated_annealing">annealed</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Quenching">quenched</a></strong> networks</p>
+          </div>
         </div>
-        <div>
-          <BouncingBalls width={600} height={350} />
+        <div class="plot-side">
+          <BouncingBalls width={400} height={350} />
+        </div>
         </div>
       </div>
     </div>
-  </div>
   
-  <style>
-
-
-    /* Full-height hero with background gradient */
-    .hero-banner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 1rem;
-    }
-
-      
-    /* GitHub link positioning */
-    .github-link {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      z-index: 3;
-    }
-  
-    .github-link img {
-      width: 40px;
-      height: 40px;
-      transition: transform 0.2s ease;
-    }
-  
-    .github-link img:hover {
-      transform: scale(1.1);
-    }
-  
-    /* The semi-transparent content wrapper */
-    .hero-content {
-      border-radius: 10px;
-      max-width: 1200px; /* control the width if desired */
-      width: 80%;        /* responsive for wide screens */
-      text-align: center;
-    }
-  
-    .hero-content h1 {
-        margin: 0 0 rem;
-        font-size: 2.5rem;
-        margin-top: 1rem;
-        font-weight: bold;
-    }
-    
-
-    .hero-content p {
-        color: #5e5a5a;
-        font-size: 1.2rem;
-        font-style: italic;
-    }
-    
-    /* Your row layout: text on the left, chart on the right */
-    .centered-layout {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 5rem auto;
-    }
-  
-    .text-block {
-            max-width: 400px;
-            margin: 0 auto; /* center the text block in its column */
-            text-align: center; /* a bit more readable vs. center alignment */
-        }
-        
-    /* Stack vertically on smaller screens */
-    @media (max-width: 1200px) {
-
-      .centered-layout {
-        flex-direction: column;
+    <style>
+      .hero-banner {
+        display: flex;
+        justify-content: center;
         align-items: center;
-        margin: 2rem auto;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 2rem 0;
+        position: relative;
+        box-sizing: border-box;
       }
     
-    .text-block {
-        max-width: 600px; /* widen if you prefer on mobile */
+      .text-block a {
+        color: #1a1a1a;
+        text-decoration: underline; /* optional */
+      }
+
+      .github-link {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 3;
+      }
+    
+      .github-link img {
+        width: 40px;
+        height: 40px;
+        transition: transform 0.2s ease;
+      }
+    
+      .github-link img:hover {
+        transform: scale(1.1);
+      }
+    
+      .hero-content {
+        max-width: 1100px;
+        width: 90%;
+        margin: 0 auto;
+      }
+    
+      .centered-layout {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2rem;
+      }
+    
+      .text-side {
+        max-width: 600px;
+        text-align: left;
+      }
+    
+      .plot-side {
+        transform: translateY(100px); /* lift slightly on large screens */
+      }
+    
+      .hero-content h1 {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #1a1a1a;
+      }
+    
+      .text-block {
+        margin-top: 3rem;
+        color: #1a1a1a;
+        font-size: 1.3rem;
+        line-height: 1.3;
+      }
+
+      .text-block p {
+        margin-top: 1rem;
+      }
+    
+      /* Responsive layout */
+      @media (max-width: 1200px) {
+        .centered-layout {
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          margin: 0 auto;
         }
-    }
-  </style>
-  
+    
+        .text-side {
+          max-width: 90%;
+          text-align: center;
+        }
+    
+        .plot-side {
+          transform: none; /* remove lift on small screens */
+        }
+    
+        .hero-content h1 {
+          text-align: center;
+        }
+    
+        .text-block p {
+          text-align: left;
+        }
+      }
+    </style>
+    
+    
