@@ -4,9 +4,9 @@
 	import {group, mean} from 'd3-array';
 	import { LayerCake, Svg } from 'layercake'; // Import the LayerCake and Svg components from LayerCake
 
-    import Scatter from  '$components/layercake/Scatter.svelte';
-	import AxisX from    '$components/layercake/AxisX.svelte';
-	import AxisY from    '$components/layercake/AxisY.svelte';
+    import Scatter from  './LayerCake/Scatter.svelte';
+	import AxisX from    './LayerCake/AxisX.svelte';
+	import AxisY from    './LayerCake/AxisY.svelte';
     
     import {clone} from '$lib/utils/correlation';
 
