@@ -13,6 +13,6 @@
 	setContext("data", data);
 </script>
 
+<h1>Hello</h1>
 
-
-<Index />
+<!-- <Index /> -->
