@@ -4,7 +4,7 @@
 	import Network from "$components/Network.svelte";
 	// import Quench from "$components/Quench.svelte";
 	// import ForceNetwork from "$components/ForceNetwork.svelte";
-    // import Scrolly from "$components/helpers/Scrolly.svelte";
+    import Scrolly from "$components/helpers/Scrolly.svelte";
     // import Hero from "$components/Hero.svelte";
 
     import nodes from "$data/nodes.csv";
@@ -32,7 +32,7 @@
 
 <!-- <Hero /> -->
 
-<!-- <section id="mean-field">
+<section id="mean-field">
     <h2>Annealing</h2>
     <p>During Covid-19, the Washington Post publised the <a url="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/">corona-simulator</a>. The animation by Harry Stevens took place in the billard ball world; the quintessential simulation world. It examined how different public health measures influenced the dynamics of the systems; what if people did social distancing, or quantines when sick. Underlying the physical world lies a couple of hidden assumptions, e.g. the width of your browser should determine the density of nodes in the canvas, but not in Steven's simulation. As a good modeler, Stevens conclude on how wrong is that representation, but nonetheless useful.</p>
     <p>Cool.</p>
@@ -57,7 +57,7 @@
     </Scrolly>
     <div class="spacer"></div>
     
-</section> -->
+</section>
 
 <p>The annealed assumption is a powerful one, but it also has a fundamental drawback; it washes away persistent group interactions. In that sense, this is terrible (but still slightly better than the bouncing ball world). It can somewhat ephemeral group interactions, which can be fairly inclusive as a process. For instance, many models of <u>higher-order interactions</u> (or complex contagion) are about paper coauthorships, where the ephemerality of the interactions is the span it takes to publish a paper. It might be good enough.</p>
 
