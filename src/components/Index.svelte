@@ -92,7 +92,7 @@
 <p>For your information, the network we've been using is that of the coauthorship at the Vermont Complex System Institute (VCSI) for the year 2019. More precisely, the projection of the coauthorship networks whereas people share papers.</p>
 
 <div class="chart-container" >
-    <ForceNetwork {nodes} {links} width={600} height={500} {padding}/>
+    <ForceNetwork {nodes} {links} width={400} height={500} {padding}/>
 </div>
 
 <p>The projection is kinda dumb; is two people have been one the same paper, we simply draw an edge between them. Sure, the weight help see which coauthors are coauthoring more often together, but it means we end up with a lot of perhaps superfluous links. What does the raw data looks like? </p>
@@ -102,11 +102,11 @@
 </div> -->
 
 <style>
-    .full-chart-container {
+    /* .full-chart-container {
         width: 100%;
         max-width: 1200px;
         margin: 2rem auto;
-    }
+    } */
 
     :global(html, body) {
             margin: 0;
@@ -184,6 +184,11 @@
             box-shadow: none;
             background: none;
             
+        }
+
+        section,
+        p {
+            margin: 1rem; /* significantly reduce horizontal margin on small screens */
         }
 
         .step {

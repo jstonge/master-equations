@@ -33,7 +33,7 @@ export function forceDirectedLayout({
 		)
 		.force('charge', forceManyBody().strength(-100)) // repulsion to spread out
 		.force('collision', forceCollide(18)) // space between nodes
-		.force('x', forceX(width / 2).strength(0.03)) 
+		.force('x', forceX(width / 2).strength(0.05)) 
 		.force('y', forceY(height / 2).strength(0.05)) 
 		.stop();
 
