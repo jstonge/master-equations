@@ -3,14 +3,14 @@
 
 	import Network from "$components/Network.svelte";
 	import Quench from "$components/Quench.svelte";
-	import ForceNetwork from "$components/ForceNetwork.svelte";
+	// import ForceNetwork from "$components/ForceNetwork.svelte";
     import Scrolly from "$components/helpers/Scrolly.svelte";
-    import Hero from "$components/Hero.svelte";
+    // import Hero from "$components/Hero.svelte";
 
     import nodes from "$data/nodes.csv";
-    import nodes_all from "$data/nodelist_all.csv";
+    // import nodes_all from "$data/nodelist_all.csv";
     import Manylinks from "$data/edges.json";
-    import links_all from "$data/edgelist_all.csv";
+    // import links_all from "$data/edgelist_all.csv";
     
     
     // First entry is the original data
@@ -30,7 +30,7 @@
 </script>
     
 
-<Hero />
+<!-- <Hero /> -->
 
 <section id="mean-field">
     <h2>Annealing</h2>
@@ -92,7 +92,7 @@
 
 <p>For your information, the network we've been using is that of the coauthorship at the Vermont Complex System Institute (VCSI) for the year 2019. More precisely, the projection of the coauthorship networks whereas people share papers.</p>
 
-<div class="chart-container" >
+<!-- <div class="chart-container" >
     <ForceNetwork {nodes} {links} width={1200} height={500} {padding}/>
 </div>
 
@@ -100,7 +100,7 @@
 
 <div class="full-chart-container" >
     <ForceNetwork nodes={nodes_all} links={links_all} width={1200} height={800} {padding}/>
-</div>
+</div> -->
 
 <style>
     .full-chart-container {
