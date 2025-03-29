@@ -5,7 +5,7 @@
 	import Quench from "$components/Quench.svelte";
 	// import ForceNetwork from "$components/ForceNetwork.svelte";
     import Scrolly from "$components/helpers/Scrolly.svelte";
-    // import Hero from "$components/Hero.svelte";
+    import Hero from "$components/Hero.svelte";
 
     import nodes from "$data/nodes.csv";
     // import nodes_all from "$data/nodelist_all.csv";
@@ -30,7 +30,7 @@
 </script>
     
 
-<!-- <Hero /> -->
+<Hero />
 
 <section id="mean-field">
     <h2>Annealing</h2>
