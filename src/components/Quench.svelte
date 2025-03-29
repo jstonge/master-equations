@@ -19,7 +19,7 @@
 
 	import { radialLayout } from '$lib/RadialLayout';
 
-	import ScatterCorr from '$components/ScatterCorr.svelte';
+	// import ScatterCorr from '$components/ScatterCorr.svelte';
 	
 	// Props
 	let { scrollyIndex, nodes, links, width, height, padding } = $props();
@@ -120,16 +120,16 @@
 
 
 <div class="chart-container">
-	{#if scrollyIndex >= 2 && scrollyIndex <= 3}
+	<!-- {#if scrollyIndex >= 2 && scrollyIndex <= 3}
 		<ScatterCorr {nodes} {nodes_xy} {Manylinks} {mainNode} {targetNode} {scrollyIndex}/>
-	{:else}
+	{:else} -->
 		<svg {width} {height}>
 			<g class="inner-chart">
 				<Edges links={renderedLinks} nodes={nodes_xy} />
 				<Nodes nodes={nodes_xy} />
 			</g>
 		</svg>
-	{/if}
+	<!-- {/if} -->
 </div>
 
 
