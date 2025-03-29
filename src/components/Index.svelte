@@ -64,7 +64,7 @@
 
 <p>But workplace and households are both great example of group behaviors that are so persistent that it influences the dynamics in ways that mean-field just cannot. If your kid get sick, the chances are that the rest of the household will get sick too. There is <em>dynamical correlation</em> between the states of individuals within the household.</p>
 
-<section id="mean-field-versus-quench">
+<!-- <section id="mean-field-versus-quench">
     
     <div class="chart-container-scrolly">
         <Quench {scrollyIndex} {nodes} {links} {width} {height} {padding}/>
@@ -83,7 +83,7 @@
     </Scrolly>
     <div class="spacer"></div>
     
-</section>
+</section> -->
  
 
 <p>This is it, now you should have a better idea what physicists mean when they say that annealed networks are thought to be reshuffled constantly, leading to the system the relax faster than the dynamics. In contrast, quench changes slowly compared to the dynamics, meaning that local structures can strongly influence the dynamics.</p>
