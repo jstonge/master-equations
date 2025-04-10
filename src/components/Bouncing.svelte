@@ -179,7 +179,7 @@
     border-radius: 6px;      /* optional, for rounded corners */
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
 
-    max-width: 700px;
+    max-width: 400px;
     max-height: 450px;
   }
 </style>
