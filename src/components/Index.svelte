@@ -198,7 +198,7 @@
             max-width: 600px;
             margin: 2rem auto;
             position: sticky;
-            top: 80px; /* adjust depending on your layout */
+            top: 0px; /* adjust depending on your layout */
             z-index: 0;
             box-shadow: none;
             background: none;
