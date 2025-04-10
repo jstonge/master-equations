@@ -21,10 +21,10 @@
     const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    let width = $state(500),
+    let width = $state(400),
         height = 600;
     
-    const padding = {top: 20, right: 40, bottom: 20, left: 100};
+    const padding = {top: 20, right: 40, bottom: 20, left: 60};
     
     let scrollyIndex = $state(); // reactive scrollIndex
 </script>
@@ -195,7 +195,7 @@
         
         .chart-container-scrolly {
             width: 100%;
-            max-width: 600px;
+            max-width: 400px;
             margin: 2rem auto;
             position: sticky;
             top: 80px; /* adjust depending on your layout */
