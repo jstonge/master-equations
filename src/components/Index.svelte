@@ -220,7 +220,7 @@
         }
 
         section p {
-            font-size: 22px;
+            font-size: 18px;
         }
 
         .step {
@@ -232,7 +232,6 @@
         .step p {
             width: 100%;
             max-width: 600px;
-            font-size: 18px;
             margin: 0 auto;          /* ✅ center horizontally */
 		    text-align: center;      /* optional: center the text itself */
             transform: none; /* ✅ Cancel out the leftward shift on small screens */
