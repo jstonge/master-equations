@@ -196,7 +196,7 @@
         .chart-container-scrolly {
             width: 100%;
             max-width: 600px;
-            margin: 2rem auto;
+            margin: 2rem 1rem;
             position: sticky;
             top: 80px; /* adjust depending on your layout */
             z-index: 0;
@@ -220,11 +220,7 @@
         }
 
         section p {
-            font-size: 18px;
-        }
-
-        section {
-            margin: 0 auto;
+            font-size: 22px;
         }
 
         .step {
