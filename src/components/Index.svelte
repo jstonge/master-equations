@@ -21,7 +21,7 @@
     const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    let width = $state(400),
+    let width = $state(350),
         height = 600;
     
     const padding = {top: 20, right: 40, bottom: 20, left: 60};
@@ -30,7 +30,7 @@
 </script>
     
 
-<!-- <Hero /> -->
+<Hero />
 
 <section id="mean-field">
     <h2>Part I: Annealing</h2>
@@ -195,7 +195,7 @@
         
         .chart-container-scrolly {
             width: 100%;
-            max-width: 400px;
+            max-width: 600px;
             margin: 2rem auto;
             position: sticky;
             top: 80px; /* adjust depending on your layout */
@@ -221,6 +221,10 @@
 
         section p {
             font-size: 18px;
+        }
+
+        section {
+            margin: 0 auto;
         }
 
         .step {

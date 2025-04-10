@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="plot-side">
-          <BouncingBalls width={350} height={350} />
+          <BouncingBalls width={400} height={350} />
         </div>
         </div>
       </div>
