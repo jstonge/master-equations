@@ -21,7 +21,7 @@
     const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    let width = $state(350),
+    let width = $state(400),
         height = 600;
     
     const padding = {top: 20, right: 40, bottom: 20, left: 60};
@@ -30,7 +30,7 @@
 </script>
     
 
-<Hero />
+<!-- <Hero /> -->
 
 <section id="mean-field">
     <h2>Part I: Annealing</h2>
