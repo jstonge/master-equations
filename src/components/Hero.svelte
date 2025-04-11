@@ -1,6 +1,7 @@
 <script>
     import BouncingBalls from "./Bouncing.svelte";
-  </script>
+    let numBalls = $state(50);
+</script>
   
   <div class="hero-banner">
     <a
@@ -27,13 +28,43 @@
           </div>
         </div>
         <div class="plot-side">
-          <BouncingBalls width={400} height={350} />
+          <label class="ball-count">
+            Ball count
+            <input type="range" bind:value={numBalls} min="1" max="100" />
+            {numBalls}
+          </label>
+          <div class="chart-container">
+            <BouncingBalls width={350} height={350} {numBalls}/>
+          </div>
         </div>
         </div>
       </div>
     </div>
   
     <style>
+
+      .chart-container {
+        position: relative;
+        margin: 1rem auto;
+
+        border: 2px solid #000; /* black border */
+        border-radius: 6px;      /* optional, for rounded corners */
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+        max-height: 450px;
+        max-width: 350px;
+      }
+      
+      .plot-side {
+        transform: translateY(150px); /* lift slightly on large screens */
+      }
+
+      .ball-count {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 1.1rem;
+      }
+          
       .hero-banner {
         display: flex;
         justify-content: center;
@@ -84,11 +115,7 @@
         max-width: 600px;
         text-align: left;
       }
-    
-      .plot-side {
-        transform: translateY(100px); /* lift slightly on large screens */
-      }
-    
+
       .hero-content h1 {
         font-size: 3rem;
         font-weight: bold;

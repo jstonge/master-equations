@@ -1,10 +1,10 @@
 <script>
   import P5 from '$lib/P5.svelte';
   
-  let numBalls = $state(50);
+  // let numBalls = $state(50);
   const RED_DURATION = 6000;
 
-  let {width, height} = $props()
+  let {width, height, numBalls} = $props()
   
   const sketch = (p5) => {
     let balls = [];
@@ -156,30 +156,14 @@
   };
 </script>
 
-<label>
-  Ball count
-  <input type="range" bind:value={numBalls} min="1" max="100" />
-  {numBalls}
-</label>
-<div class="chart-container">  
-  <P5 {sketch} />
-</div>
+
+<P5 {sketch} />
 
 
 <style>
   :global(canvas) {
     display: block;
-  }
-  
-  .chart-container {
-    position: relative;
-    margin: 1rem auto;
-
-    border: 2px solid #000; /* black border */
-    border-radius: 6px;      /* optional, for rounded corners */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* subtle shadow */
-
-    max-width: 400px;
-    max-height: 450px;
+    width: 100% !important;   /* override pixel size */
+    height: auto !important;  /* maintain aspect ratio */
   }
 </style>

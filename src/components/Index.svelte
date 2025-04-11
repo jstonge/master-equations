@@ -1,6 +1,6 @@
 <script lang="ts">    
     import { getContext } from "svelte";
-
+    import { innerWidth } from 'svelte/reactivity/window';
 	import Network from "$components/Network.svelte";
 	import Quench from "$components/Quench.svelte";
 	import ForceNetwork from "$components/ForceNetwork.svelte";
@@ -21,7 +21,8 @@
     const postIntro = copy.postIntro;
    
     // Global properties of the plots.
-    let width = $state(350),
+    
+    let width = $state(innerWidth.current && innerWidth.current > 1200 ? 500 : 350),
         height = 600;
     
     const padding = {top: 20, right: 40, bottom: 20, left: 60};
@@ -43,7 +44,7 @@
     </div>
 
     <div class="spacer"></div>
-    <Scrolly bind:value={scrollyIndex}>
+    <Scrolly bind:value={scrollyIndex}  offset={innerWidth.current > 1200 ? '50vh' : '20vh'}>
             {#each steps as text, i}
                 {@const active = scrollyIndex === i}
                 <div class="step" class:active>
@@ -68,7 +69,7 @@
     </div>
 
     <div class="spacer"></div>
-    <Scrolly bind:value={scrollyIndex}>
+    <Scrolly bind:value={scrollyIndex}  offset={innerWidth.current > 1200 ? '50vh' : '20vh'}>
             {#each postIntro as text, i}
                 {@const active = scrollyIndex === i}
                 <div class="step" class:active>
@@ -138,7 +139,7 @@
         width: 40%;
         height: 550px;
         position: sticky;
-        top: 15%;
+        top: calc(50vh - 275px); /* ✅ centers on wide screens */
         right: 5%;
         margin-left: auto;
     }
@@ -194,16 +195,14 @@
     @media (max-width: 1200px) {
         
         .chart-container-scrolly {
+            position: sticky;
+            top: 80px; /* or adjust for header height */
             width: 100%;
             max-width: 600px;
+            top: calc(50vh - 275px);
             margin: 2rem auto;
-            position: sticky;
-            top: 80px; /* adjust depending on your layout */
-            z-index: 0;
-            box-shadow: none;
-            background: none;
-            
         }
+
         
         .chart-container {
             display: flex;
