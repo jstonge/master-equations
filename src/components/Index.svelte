@@ -1,35 +1,27 @@
-<script lang="ts">    
-    import { getContext } from "svelte";
-    import { innerWidth } from 'svelte/reactivity/window';
-	import Network from "$components/Network.svelte";
-	import Quench from "$components/Quench.svelte";
-	import ForceNetwork from "$components/ForceNetwork.svelte";
-    import Scrolly from "$components/helpers/Scrolly.svelte";
-    import Hero from "$components/Hero.svelte";
+<script lang="ts">
+	import { getContext } from 'svelte';
+	import { innerWidth } from 'svelte/reactivity/window';
+	import Network from '$components/Network.svelte';
+	import Quench from '$components/Quench.svelte';
+	import ForceNetwork from '$components/ForceNetwork.svelte';
+	import Scrolly from '$components/helpers/Scrolly.svelte';
+	import Hero from '$components/Hero.svelte';
 
-    import nodes from "$data/nodes.csv";
-    import nodes_all from "$data/nodelist_all.csv";
-    import Manylinks from "$data/edges.json";
-    import links_all from "$data/edgelist_all.csv";
-    
-    
-    // First entry is the original data
-    let links = Manylinks[0]
+	import nodes from '$data/nodes.csv';
+	import nodes_all from '$data/nodelist_all.csv';
+	import Manylinks from '$data/edges.json';
+	import links_all from '$data/edgelist_all.csv';
 
-    const copy = getContext("copy");    
-    const steps = copy.steps;
-    const postIntro = copy.postIntro;
-   
-    // Global properties of the plots.
-    
-    let width = $state(innerWidth.current && innerWidth.current > 1200 ? 500 : 350),
-        height = 600;
-    
-    const padding = {top: 20, right: 40, bottom: 20, left: 60};
-    
-    let scrollyIndex = $state(); // reactive scrollIndex
+	let links = Manylinks[0];
+	const copy = getContext("copy");
+	const steps = copy.steps;
+	const postIntro = copy.postIntro;
+
+	let width = $state(innerWidth.current > 1200 ? 500 : 350);
+	let height = 600;
+	const padding = { top: 20, right: 40, bottom: 20, left: 60 };
+	let scrollyIndex = $state();
 </script>
-    
 
 <Hero />
 
@@ -103,141 +95,117 @@
 
 
 <style>
-    /* .full-chart-container {
-        width: 100%;
-        max-width: 1200px;
-        margin: 2rem auto;
-    } */
-     
+	:global(html, body) {
+		margin: 0;
+		background-color: whitesmoke;
+		font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	}
 
-    :global(html, body) {
-            margin: 0;
-            background-color: "whitesmoke"; /* Light background */
-            font-family: system-ui, -apple-system, BlinkMacSystemFont,
-            "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    }    
-        
-    /* Ensures spacing between sections */
-    section,
-    h2,
-    h3,
-    p {
-        color: #1a1a1a;
-        text-align: left;
-        margin: 2rem 10rem; /* top/bottom: 2rem, left/right: 6rem */
-    }
+	section,
+	h2,
+	h3,
+	p {
+		color: #1a1a1a;
+		text-align: left;
+		margin: 2rem 10rem;
+	}
 
-    section h2 {
-        font-size: 36px;
-    }
+	section h2 {
+		font-size: 36px;
+	}
 
-    section p {
-        font-size: 22px;
-    }
+	section p {
+		font-size: 22px;
+	}
 
-    .chart-container-scrolly {
-        width: 40%;
-        height: 550px;
-        position: sticky;
-        top: calc(50vh - 275px); /* ✅ centers on wide screens */
-        right: 5%;
-        margin-left: auto;
-    }
-    
-    .chart-container {
-        width: fit-content;     /* or a fixed width if you prefer */
-        margin: 0 auto;
-        display: block;
-        }
+	.chart-container-scrolly {
+		width: 40%;
+		height: 550px;
+		position: sticky;
+		top: calc(50vh - 275px);
+		right: 5%;
+		margin-left: auto;
+	}
 
+	.chart-container {
+		width: fit-content;
+		margin: 0 auto;
+		display: block;
+	}
 
-    .spacer {
-        height: 75vh;
-    }
+	.spacer {
+		height: 75vh;
+	}
 
-    .step {
-        height: 80vh;
-        display: flex; /* Makes it a flexbox */
-        place-items: center; /* Centers vertically */
-        justify-content: center; /* Centers horizontally */
-        /* margin-left: -55%; Moves it slightly to the left */
-    }
+	.step {
+		height: 80vh;
+		display: flex;
+		place-items: center;
+		justify-content: center;
+	}
 
-    /* This is affect children p of class .step */
-    .step p {
-        padding: 1em;
-        background: whitesmoke;
-        color: #ccc;
-        border-radius: 5px;
-        padding: 0.5rem 1rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        transition: background 500ms ease;
-        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
-        z-index: 10;
-        width: 40%;
-        transform: translateX(-60%); /* shifts left to center within the left half */
-    }
+	.step p {
+		padding: 0.5rem 1rem;
+		background: whitesmoke;
+		color: #ccc;
+		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		transition: background 500ms ease;
+		box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+		z-index: 10;
+		width: 40%;
+		transform: translateX(-60%);
+	}
 
+	.step.active p {
+		background: white;
+		color: black;
+	}
 
-    /* We use CSS to change properties based on 'active' state */
-    .step.active p {
-        background: white;
-        color: black;
-    }
+	:global(.step .bold) {
+		font-family: var(--sans);
+	}
 
-    
-    :global(.step .bold) {
-        font-family: var(--sans);
-    }
+	@media (max-width: 1200px) {
+		.chart-container-scrolly {
+			position: sticky;
+			top: calc(50vh - 275px);
+			width: 100%;
+			max-width: 600px;
+			margin: 2rem auto;
+		}
 
-    @media (max-width: 1200px) {
-        
-        .chart-container-scrolly {
-            position: sticky;
-            top: 80px; /* or adjust for header height */
-            width: 100%;
-            max-width: 600px;
-            top: calc(50vh - 275px);
-            margin: 2rem auto;
-        }
+		.chart-container {
+			display: flex;
+			justify-content: center;
+			width: 100%;
+		}
 
-        
-        .chart-container {
-            display: flex;
-            justify-content: center;
-            width: 100%;
-            padding: 0rem 0;
-            }
+		section,
+		h2,
+		h3,
+		p {
+			margin: 1rem;
+		}
 
-        section,
-        h2,
-        h3,
-        p {
-            margin: 1rem 1rem; /* top/bottom: 2rem, left/right: 6rem */
-        }
+		section p {
+			font-size: 18px;
+		}
 
-        section p {
-            font-size: 18px;
-        }
+		.step {
+			margin-left: 0;
+			padding: 0 1rem;
+			justify-content: center;
+		}
 
-        .step {
-            margin-left: 0;
-            padding: 0 1rem;
-            justify-content: center; 
-        }
-
-        .step p {
-            width: 100%;
-            max-width: 600px;
-            margin: 0 auto;          /* ✅ center horizontally */
-		    text-align: center;      /* optional: center the text itself */
-            transform: none; /* ✅ Cancel out the leftward shift on small screens */
-        }
-
-        }
-
-        
+		.step p {
+			width: 100%;
+			max-width: 600px;
+			margin: 0 auto;
+			text-align: center;
+			transform: none;
+		}
+	}
 </style>
-    
